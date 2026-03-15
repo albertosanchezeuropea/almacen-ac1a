@@ -2,6 +2,10 @@
 
 Banner interactivo diseñado para el aula virtual del módulo **Técnicas de Almacén** (FP Comercio y Marketing).
 
+## 🚀 Pruébalo ahora
+
+**[→ Testearlo en directo](https://albertosanchezedu.github.io/banner-racha-tecnicas-almacen/banner_almacen.html)**
+
 ## ¿Qué hace?
 
 Cada día aparece una pregunta diferente sobre el módulo — datos curiosos, situaciones reales, conceptos clave — que el alumno responde en segundos directamente desde la portada del curso.
