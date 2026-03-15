@@ -25,6 +25,8 @@ body{padding:18px 20px 28px;}
 .rf{font-size:18px;margin:3px 0 2px;}
 .rm{font-family:'Fira Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.8);font-style:italic;line-height:1.3;margin-top:4px;}
 .rb{font-family:'Fira Sans',sans-serif;font-size:9px;color:rgba(196,241,53,.75);margin-top:4px;}
+.rshield{font-family:'Fira Sans',sans-serif;font-size:9px;color:#fff;background:rgba(196,241,53,.25);border:1px solid rgba(196,241,53,.5);border-radius:4px;padding:2px 6px;margin-top:5px;display:none;}
+.rshield.active{display:block;}
 .q-block{background:rgba(0,0,0,.16);border-radius:10px;padding:13px;flex:1;min-width:0;display:flex;flex-direction:column;}
 .qhook{font-family:'Fira Sans',sans-serif;font-size:9px;font-weight:700;color:#C4F135;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
 .qtxt{font-family:'Fira Sans',sans-serif;font-size:12px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:8px;}
@@ -33,6 +35,7 @@ body{padding:18px 20px 28px;}
 .qopt:hover:not([disabled]){background:rgba(255,255,255,.22);}
 .qopt.correct{background:rgba(196,241,53,.28);border-color:#C4F135;font-weight:700;color:#C4F135;}
 .qopt.wrong{background:rgba(255,80,80,.28);border-color:rgba(255,120,120,.7);color:#ffc0c0;}
+.qopt.shielded{background:rgba(255,200,0,.2);border-color:rgba(255,200,0,.6);color:#ffe580;}
 .qopt[disabled]{cursor:default;}
 .qfact{font-family:'Fira Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.7);font-style:italic;margin-top:6px;line-height:1.4;display:none;}
 .qnext{background:#C4F135;color:#1a1a1a;border:none;border-radius:6px;padding:5px 12px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-top:6px;display:none;align-self:flex-start;}
@@ -72,6 +75,7 @@ body{padding:18px 20px 28px;}
       <div class="rf" id="rf">⚡</div>
       <div class="rm" id="rm">¡Empieza hoy!</div>
       <div class="rb" id="rb"></div>
+      <div class="rshield" id="rshield">🛡️ Escudo activo</div>
     </div>
     <div class="q-block" id="qb">
       <div class="qtxt" style="color:rgba(255,255,255,.4)">Cargando...</div>
@@ -160,6 +164,20 @@ var QS=[
 {t:'mc',h:'¿Cuál crees?',q:'¿Qué es el flujo tenso en logística?',o:['Abastecer la producción sin apenas stock intermedio','Un tipo de transporte urgente','El flujo de mercancía peligrosa','El movimiento rápido en almacén'],a:0,f:'El flujo tenso es el extremo del just-in-time: la mercancía llega justo cuando se necesita.'}
 ];
 
+// Semilla aleatoria basada en el día para que la pregunta cambie cada día pero sea la misma para todos
+function seededRand(seed){
+  var x=Math.sin(seed+1)*10000;
+  return x-Math.floor(x);
+}
+function shuffleSeeded(arr, seed){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(seededRand(seed+i)*(i+1));
+    var tmp=a[i];a[i]=a[j];a[j]=tmp;
+  }
+  return a;
+}
+
 var MOTS=[[0,'¡Empieza tu racha hoy!'],[1,'¡Primera correcta! Sigue así 💪'],[2,'¡Racha de 2! Calentando motores...'],[3,'¡3 seguidas! Ya te lo estás currando 🔥'],[5,'¡5 seguidas! Huele a profesional 💥'],[7,'¡Imparable! 7 sin fallar 🌟'],[10,'¡10 SEGUIDAS! Eres un crack 🏆'],[15,'¡15! Podrías dar tú la clase 👑'],[20,'¡20 SIN FALLO! Leyenda del almacén 🥇'],[999,'¡Racha brutal! Nadie llega tan lejos 🚀']];
 var PRIZES=[{e:'📦',t:'¡Artículo bien ubicado!'},{e:'🏷️',t:'¡SKU verificado!'},{e:'✅',t:'¡Picking sin errores!'},{e:'🚛',t:'¡Expedición aprobada!'},{e:'🔥',t:'¡Racha en marcha!'},{e:'🌟',t:'¡Top operario!'},{e:'🏆',t:'¡Profesional en formación!'},{e:'💥',t:'¡Correcto!'}];
 var EMOJIS=['📦','🏭','🚛','📋','🔍','🏷️','🪣','📊','⚙️','🔧','📬','🗂️'];
@@ -167,9 +185,24 @@ var EMOJIS=['📦','🏭','🚛','📋','🔍','🏷️','🪣','📊','⚙️',
 function gToday(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function gDay(){return Math.floor((new Date()-new Date(2024,8,1))/86400000);}
 
-var streak=0,best=0,atd=false,savedAns=-1;
-try{streak=parseInt(localStorage.getItem("alm_s")||"0");best=parseInt(localStorage.getItem("alm_b")||"0");atd=localStorage.getItem("alm_atd")===gToday();savedAns=atd?parseInt(localStorage.getItem("alm_ans")||"-1"):-1;}catch(e){}
-function save(ans){try{localStorage.setItem("alm_s",streak);localStorage.setItem("alm_b",best);localStorage.setItem("alm_atd",gToday());if(ans!==undefined)localStorage.setItem("alm_ans",ans);}catch(e){}}
+var streak=0,best=0,atd=false,savedAns=-1,shield=0;
+try{
+  streak=parseInt(localStorage.getItem("alm_s")||"0");
+  best=parseInt(localStorage.getItem("alm_b")||"0");
+  shield=parseInt(localStorage.getItem("alm_shield")||"0");
+  atd=localStorage.getItem("alm_atd")===gToday();
+  savedAns=atd?parseInt(localStorage.getItem("alm_ans")||"-1"):-1;
+}catch(e){}
+
+function save(ans){
+  try{
+    localStorage.setItem("alm_s",streak);
+    localStorage.setItem("alm_b",best);
+    localStorage.setItem("alm_atd",gToday());
+    localStorage.setItem("alm_shield",shield);
+    if(ans!==undefined)localStorage.setItem("alm_ans",ans);
+  }catch(e){}
+}
 
 function getMot(n){var m=MOTS[0][1];for(var i=0;i<MOTS.length;i++){if(n>=MOTS[i][0])m=MOTS[i][1];}return m;}
 function getFire(n){if(n===0)return'⚡';if(n<3)return'🔥';if(n<7)return'💥';if(n<10)return'🌟';if(n<15)return'🏆';return'👑';}
@@ -181,23 +214,48 @@ function updUI(){
   document.getElementById('rf').textContent=getFire(streak);
   document.getElementById('rm').textContent=getMot(streak);
   document.getElementById('rb').textContent=best>0?'Récord: '+best:'';
+  var sh=document.getElementById('rshield');
+  if(shield>0){sh.textContent='🛡️ Escudo x'+shield;sh.className='rshield active';}
+  else{sh.className='rshield';}
 }
 
-var cQ=null,selId=null,selTxt=null,slots=[];
+var cQ=null,cQShuffled=null,selId=null,selTxt=null,slots=[];
+
+// Devuelve la pregunta del día con opciones barajadas usando semilla del día
+function getDayQuestion(){
+  var day=gDay();
+  var qIdx=day % QS.length;
+  var q=QS[qIdx];
+  if(q.t!=='mc') return {q:q, shuffled:null, correctShuffledIdx:-1};
+  // Barajar opciones con semilla del día
+  var indices=[0,1,2,3].slice(0,q.o.length);
+  var shuffledIdx=shuffleSeeded(indices, day*100);
+  var newOpts=shuffledIdx.map(function(i){return q.o[i];});
+  var correctShuffledIdx=shuffledIdx.indexOf(q.a);
+  return {q:q, shuffled:newOpts, correctShuffledIdx:correctShuffledIdx};
+}
 
 function render(){
-  cQ=QS[gDay()%QS.length];
+  var dq=getDayQuestion();
+  cQ=dq.q;cQShuffled=dq;
   var el=document.getElementById('qb');
-  if(cQ.t==='mc')renderMC(el,cQ);else renderDrag(el,cQ);
+  if(cQ.t==='mc')renderMC(el,dq);else renderDrag(el,cQ);
 }
 
-function renderMC(el,q){
+function renderMC(el,dq){
+  var q=dq.q;
+  var correctIdx=dq.correctShuffledIdx;
+  var opts=dq.shuffled;
   var dis=atd?'disabled':'';
   var h='<div class="qhook">'+q.h+'</div><div class="qtxt">'+q.q+'</div><div class="qopts">';
-  for(var i=0;i<q.o.length;i++){
+  for(var i=0;i<opts.length;i++){
     var cls='qopt';
-    if(atd&&savedAns>=0){if(i===q.a)cls='qopt correct';else if(i===savedAns&&savedAns!==q.a)cls='qopt wrong';}
-    h+='<button class="'+cls+'" '+dis+' onclick="answerMC('+i+')">'+String.fromCharCode(65+i)+') '+q.o[i]+'</button>';
+    if(atd&&savedAns>=0){
+      if(i===correctIdx) cls='qopt correct';
+      else if(i===savedAns&&savedAns!==correctIdx) cls='qopt wrong';
+      else if(i===savedAns&&savedAns===correctIdx) cls='qopt correct';
+    }
+    h+='<button class="'+cls+'" '+dis+' onclick="answerMC('+i+')">'+String.fromCharCode(65+i)+') '+opts[i]+'</button>';
   }
   h+='</div><div class="qfact" id="qf" style="display:'+(atd?'block':'none')+'">💡 '+q.f+'</div>';
   h+='<button class="qnext" id="qn" style="display:'+(atd?'inline-block':'none')+'" onclick="nextQ()">Siguiente →</button>';
@@ -206,17 +264,36 @@ function renderMC(el,q){
 
 function answerMC(i){
   if(atd)return;atd=true;savedAns=i;
-  var q=cQ,btns=document.querySelectorAll('.qopt');
+  var dq=cQShuffled;
+  var correctIdx=dq.correctShuffledIdx;
+  var btns=document.querySelectorAll('.qopt');
   for(var b=0;b<btns.length;b++)btns[b].disabled=true;
-  if(i===q.a){
+
+  if(i===correctIdx){
     btns[i].className='qopt correct';
-    streak++;if(streak>best)best=streak;save(i);updUI();
-    var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=q.f;
-    setTimeout(function(){showP(true,f,pr);},350);
+    streak++;
+    // Comprobar si se gana escudo (cada 20)
+    var newShield=false;
+    if(streak>0&&streak%10===0){shield++;newShield=true;}
+    if(streak>best)best=streak;
+    save(i);updUI();
+    var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=dq.q.f;
+    setTimeout(function(){showP(true,f,pr,newShield);},350);
   }else{
-    btns[i].className='qopt wrong';btns[q.a].className='qopt correct';
-    var old=streak,f=q.f;streak=0;save(i);updUI();
-    setTimeout(function(){showP(false,f,null,old);},350);
+    if(shield>0){
+      // Escudo activo: absorbe el fallo, no se pierde la racha
+      shield--;
+      btns[i].className='qopt shielded';
+      btns[correctIdx].className='qopt correct';
+      save(i);updUI();
+      var f=dq.q.f;
+      setTimeout(function(){showPShield(f);},350);
+    }else{
+      btns[i].className='qopt wrong';
+      btns[correctIdx].className='qopt correct';
+      var old=streak,f=dq.q.f;streak=0;save(i);updUI();
+      setTimeout(function(){showP(false,f,null,old);},350);
+    }
   }
   document.getElementById('qf').style.display='block';
   document.getElementById('qn').style.display='inline-block';
@@ -271,24 +348,70 @@ function checkDrag(){
   document.getElementById('qbtn').style.display='none';
   document.getElementById('qf').style.display='block';
   document.getElementById('qn').style.display='inline-block';
-  if(ok){streak++;if(streak>best)best=streak;save();updUI();var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=cQ.f;setTimeout(function(){showP(true,f,pr);},400);}
-  else{var old=streak,f=cQ.f;streak=0;save();updUI();setTimeout(function(){showP(false,f,null,old);},400);}
+  if(ok){
+    streak++;
+    var newShield=false;
+    if(streak>0&&streak%10===0){shield++;newShield=true;}
+    if(streak>best)best=streak;
+    save();updUI();
+    var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=cQ.f;
+    setTimeout(function(){showP(true,f,pr,newShield);},400);
+  }else{
+    if(shield>0){
+      shield--;save();updUI();var f=cQ.f;
+      setTimeout(function(){showPShield(f);},400);
+    }else{
+      var old=streak,f=cQ.f;streak=0;save();updUI();
+      setTimeout(function(){showP(false,f,null,old);},400);
+    }
+  }
 }
 
 function nextQ(){
-  atd=false;var idx;
+  atd=false;
+  // Pregunta aleatoria para el botón "Siguiente" (no la del día)
+  var idx;
   do{idx=Math.floor(Math.random()*QS.length);}while(QS[idx]===cQ&&QS.length>1);
-  cQ=QS[idx];var el=document.getElementById('qb');
-  if(cQ.t==='mc')renderMC(el,cQ);else renderDrag(el,cQ);
+  var q=QS[idx];cQ=q;
+  var el=document.getElementById('qb');
+  if(q.t==='mc'){
+    // Barajar con semilla aleatoria para preguntas extra
+    var indices=[0,1,2,3].slice(0,q.o.length);
+    var shuffledIdx=shuffleSeeded(indices,Math.floor(Math.random()*9999));
+    var newOpts=shuffledIdx.map(function(i){return q.o[i];});
+    var correctShuffledIdx=shuffledIdx.indexOf(q.a);
+    cQShuffled={q:q,shuffled:newOpts,correctShuffledIdx:correctShuffledIdx};
+    renderMC(el,cQShuffled);
+  }else{
+    renderDrag(el,q);
+  }
 }
 
-function showP(win,fact,pr,lost){
-  if(win&&pr){document.getElementById('pe').textContent=pr.e;document.getElementById('pt').textContent=pr.t;}
-  else{document.getElementById('pe').textContent='💔';document.getElementById('pt').textContent=lost>0?'¡Racha de '+lost+' perdida!':'¡Casi!';}
-  document.getElementById('pd').textContent='💡 '+fact;
+function showP(win,fact,pr,newShield){
+  if(win&&pr){
+    document.getElementById('pe').textContent=pr.e;
+    var title=pr.t;
+    if(newShield) title='🛡️ ¡Escudo de racha conseguido!';
+    document.getElementById('pt').textContent=title;
+    var desc='💡 '+fact;
+    if(newShield) desc='Has llegado a una racha de '+streak+'. Tienes un escudo que absorberá tu próximo fallo. 💡 '+fact;
+    document.getElementById('pd').textContent=desc;
+  }else{
+    document.getElementById('pe').textContent='💔';
+    document.getElementById('pt').textContent=lost>0?'¡Racha de '+lost+' perdida!':'¡Casi!';
+    document.getElementById('pd').textContent='💡 '+fact;
+  }
   document.getElementById('ov').classList.add('show');
   if(win)confetti();
 }
+
+function showPShield(fact){
+  document.getElementById('pe').textContent='🛡️';
+  document.getElementById('pt').textContent='¡Escudo activado!';
+  document.getElementById('pd').textContent='Tu escudo ha absorbido el fallo. La racha continúa. 💡 '+fact;
+  document.getElementById('ov').classList.add('show');
+}
+
 function closeP(){document.getElementById('ov').classList.remove('show');}
 
 function confetti(){
