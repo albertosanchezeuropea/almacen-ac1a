@@ -1,318 +1,434 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Técnicas de almacén – AC1A</title>
+
+
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;0,900;1,400&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{background:#F06B6B;font-family:Arial,sans-serif;min-height:100vh;}
-body{padding:18px 20px 20px;}
-.fe{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
-.ei{position:absolute;opacity:0.12;animation:floatUp linear infinite;}
-@keyframes floatUp{0%{transform:translateY(110%);opacity:0;}8%{opacity:0.12;}90%{opacity:0.12;}100%{transform:translateY(-10%);opacity:0;}}
-.mtag{display:inline-block;background:#C4F135;color:#1a1a1a;font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 11px;border-radius:4px;margin-bottom:10px;}
-.btitle{font-family:"Arial Black",Arial,sans-serif;font-weight:900;font-size:34px;color:#fff;line-height:1.05;margin-bottom:3px;}
-.bsub{font-size:13px;font-style:italic;color:rgba(255,255,255,.6);margin-bottom:16px;}
-.two-col{display:flex;gap:10px;align-items:stretch;}
-.racha-block{background:rgba(0,0,0,.18);border-radius:10px;padding:14px 10px;width:128px;min-width:128px;text-align:center;flex-shrink:0;}
-.rl{font-size:9px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
-.rn{font-family:"Arial Black",Arial,sans-serif;font-weight:900;font-size:50px;color:#C4F135;line-height:1;}
-.rn.bump{animation:bump .35s ease;}
+.bw{font-family:'Fira Sans',sans-serif;background:#F06B6B;border-radius:16px;overflow:hidden;position:relative;min-height:280px;}
+.fe{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.ei{position:absolute;opacity:0.13;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(110%) rotate(0deg);opacity:0;}8%{opacity:0.13;}90%{opacity:0.13;}100%{transform:translateY(-10%) rotate(15deg);opacity:0;}}
+.bc{position:relative;z-index:2;padding:24px 28px 22px;}
+.mtag{display:inline-block;background:#C4F135;color:#1a1a1a;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 12px;border-radius:4px;margin-bottom:10px;}
+.btitle{font-weight:900;font-size:40px;color:#fff;line-height:1;margin-bottom:2px;letter-spacing:-0.01em;}
+.bsub{font-size:14px;font-style:italic;color:rgba(255,255,255,0.6);margin-bottom:18px;}
+.two-col{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;}
+@media(max-width:580px){.two-col{grid-template-columns:1fr;}.btitle{font-size:30px;}}
+
+.racha-block{background:rgba(0,0,0,0.16);border-radius:12px;padding:14px 16px;width:140px;text-align:center;flex-shrink:0;}
+.racha-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;}
+.racha-num{font-weight:900;font-size:48px;color:#C4F135;line-height:1;transition:transform 0.3s;}
+.racha-num.bump{animation:bump 0.35s ease;}
 @keyframes bump{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
-.rf{font-size:18px;margin:3px 0 2px;}
-.rm{font-size:10px;color:rgba(255,255,255,.8);font-style:italic;line-height:1.3;margin-top:4px;}
-.rb{font-size:9px;color:rgba(196,241,53,.75);margin-top:4px;}
-.q-block{background:rgba(0,0,0,.16);border-radius:10px;padding:13px;flex:1;min-width:0;display:flex;flex-direction:column;}
-.qhook{font-size:9px;font-weight:700;color:#C4F135;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
-.qtxt{font-size:12px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:8px;}
+.racha-fire{font-size:20px;margin:2px 0;}
+.racha-mot{font-size:10px;color:rgba(255,255,255,0.75);font-style:italic;line-height:1.3;margin-top:6px;}
+.racha-sub{font-size:9px;color:rgba(255,255,255,0.45);margin-top:4px;}
+.racha-best{font-size:9px;color:rgba(196,241,53,0.7);margin-top:2px;}
+
+.q-block{background:rgba(0,0,0,0.14);border-radius:12px;padding:14px 16px;min-height:180px;display:flex;flex-direction:column;}
+.qhook{font-size:10px;font-weight:700;color:#C4F135;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}
+.qtxt{font-size:13px;font-weight:700;color:white;line-height:1.35;margin-bottom:10px;}
 .qopts{display:flex;flex-direction:column;gap:4px;flex:1;}
-.qopt{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:5px 9px;font-size:11px;font-family:Arial,sans-serif;color:#fff;cursor:pointer;text-align:left;line-height:1.3;transition:background .15s;}
-.qopt:hover:not([disabled]){background:rgba(255,255,255,.22);}
-.qopt.correct{background:rgba(196,241,53,.28);border-color:#C4F135;font-weight:700;color:#C4F135;}
-.qopt.wrong{background:rgba(255,80,80,.28);border-color:rgba(255,120,120,.7);color:#ffc0c0;}
+.qopt{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:7px;padding:5px 10px;font-size:11px;color:white;cursor:pointer;font-family:'Fira Sans',sans-serif;text-align:left;transition:background 0.15s;}
+.qopt:hover:not([disabled]){background:rgba(255,255,255,0.2);}
+.qopt.correct{background:rgba(196,241,53,0.28);border-color:#C4F135;font-weight:700;color:#C4F135;}
+.qopt.wrong{background:rgba(255,80,80,0.28);border-color:rgba(255,100,100,0.7);color:#ffc0c0;}
 .qopt[disabled]{cursor:default;}
-.qfact{font-size:10px;color:rgba(255,255,255,.7);font-style:italic;margin-top:6px;line-height:1.4;display:none;}
-.qnext{background:#C4F135;color:#1a1a1a;border:none;border-radius:6px;padding:5px 12px;font-family:Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-top:6px;display:none;align-self:flex-start;}
-.dchips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
-.dchip{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:3px 9px;font-size:10px;font-family:Arial,sans-serif;color:#fff;cursor:pointer;line-height:1.4;transition:background .15s;}
-.dchip:hover:not(.used){background:rgba(255,255,255,.25);}
-.dchip.used{opacity:.3;cursor:default;}
-.dchip.selected{background:rgba(196,241,53,.35);border-color:#C4F135;color:#C4F135;}
-.dslots{display:flex;flex-direction:column;gap:3px;margin-bottom:5px;}
-.dslot{background:rgba(0,0,0,.15);border:1.5px dashed rgba(255,255,255,.3);border-radius:6px;padding:4px 9px;font-size:10px;font-family:Arial,sans-serif;color:rgba(255,255,255,.45);min-height:26px;display:flex;align-items:center;gap:5px;cursor:pointer;}
-.dslot.filled{border-style:solid;border-color:rgba(255,255,255,.5);color:#fff;}
-.dslot.correct-s{border-color:#C4F135;background:rgba(196,241,53,.15);color:#C4F135;}
-.dslot.wrong-s{border-color:rgba(255,100,100,.7);background:rgba(255,80,80,.15);color:#ffc0c0;}
-.slot-lbl{color:rgba(255,255,255,.4);font-size:9px;flex-shrink:0;}
-.qbtn{background:#C4F135;color:#1a1a1a;border:none;border-radius:6px;padding:5px 12px;font-family:Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-top:5px;}
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:20;align-items:center;justify-content:center;}
-.ov.show{display:flex;}
-.pb{background:#C4F135;border-radius:12px;padding:20px 22px;text-align:center;max-width:280px;width:90%;position:relative;}
-.pe{font-size:36px;margin-bottom:6px;}
-.pt{font-family:"Arial Black",Arial,sans-serif;font-weight:900;font-size:16px;color:#1a1a1a;margin-bottom:5px;}
-.pd{font-size:11px;color:#333;line-height:1.45;margin-bottom:12px;}
-.pc{background:#1a1a1a;color:#C4F135;border:none;border-radius:7px;padding:7px 18px;font-family:Arial,sans-serif;font-weight:700;font-size:12px;cursor:pointer;}
-.cf{position:absolute;border-radius:2px;animation:cfall 1.3s ease-in forwards;}
-@keyframes cfall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(160px) rotate(400deg);opacity:0;}}
+.qfact{font-size:10px;color:rgba(255,255,255,0.65);font-style:italic;margin-top:6px;line-height:1.35;display:none;}
+.qnext{background:#C4F135;color:#1a1a1a;border:none;border-radius:6px;padding:5px 12px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-top:8px;display:none;align-self:flex-start;}
+
+.drag-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
+.dchip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:99px;padding:3px 10px;font-size:11px;color:white;cursor:pointer;font-family:'Fira Sans',sans-serif;transition:background 0.15s;}
+.dchip:hover:not(.used){background:rgba(255,255,255,0.25);}
+.dchip.used{opacity:0.35;cursor:default;}
+.dchip.selected{background:rgba(196,241,53,0.35);border-color:#C4F135;color:#C4F135;}
+.dslots{display:flex;flex-direction:column;gap:4px;margin-bottom:6px;}
+.dslot{background:rgba(0,0,0,0.15);border:1.5px dashed rgba(255,255,255,0.3);border-radius:7px;padding:4px 10px;font-size:11px;color:rgba(255,255,255,0.45);min-height:26px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:border-color 0.2s;}
+.dslot.filled{border-style:solid;border-color:rgba(255,255,255,0.5);color:white;}
+.dslot.correct-s{border-color:#C4F135;background:rgba(196,241,53,0.15);color:#C4F135;}
+.dslot.wrong-s{border-color:rgba(255,100,100,0.7);background:rgba(255,80,80,0.15);color:#ffc0c0;}
+.slot-lbl{color:rgba(255,255,255,0.45);font-size:10px;flex-shrink:0;}
+.qbtn{background:#C4F135;color:#1a1a1a;border:none;border-radius:6px;padding:5px 12px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-top:6px;align-self:flex-start;}
+
+.prize-overlay{display:none;position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:10;align-items:center;justify-content:center;border-radius:16px;}
+.prize-overlay.show{display:flex;}
+.prize-box{background:#C4F135;border-radius:14px;padding:22px 28px;text-align:center;max-width:300px;position:relative;}
+.prize-e{font-size:40px;margin-bottom:6px;}
+.prize-t{font-weight:900;font-size:19px;color:#1a1a1a;margin-bottom:4px;}
+.prize-d{font-size:12px;color:#333;line-height:1.4;margin-bottom:12px;}
+.prize-close{background:#1a1a1a;color:#C4F135;border:none;border-radius:7px;padding:7px 18px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:12px;cursor:pointer;}
+.cf{position:absolute;border-radius:2px;animation:cfall 1.2s ease-in forwards;}
+@keyframes cfall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(180px) rotate(400deg);opacity:0;}}
+.fail-shake{animation:shake 0.4s ease;}
+@keyframes shake{0%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}100%{transform:translateX(0);}}
 </style>
-</head>
-<body>
-<div class="fe" id="el"></div>
-<div style="position:relative;z-index:2;">
-  <div class="mtag">AC1A &middot; FP Comercio</div>
-  <div class="btitle">Técnicas de almacén</div>
-  <div class="bsub">de estudiante a profesional</div>
-  <div class="two-col">
-    <div class="racha-block">
-      <div class="rl">Racha sin fallos</div>
-      <div class="rn" id="rn">0</div>
-      <div class="rf" id="rf">⚡</div>
-      <div class="rm" id="rm">¡Empieza hoy!</div>
-      <div class="rb" id="rb"></div>
+
+<div class="bw" id="banner">
+  <div class="fe" id="emojiLayer"></div>
+  <div class="bc">
+    <div class="mtag">AC1A · FP Comercio</div>
+    <div class="btitle">Técnicas de almacén</div>
+    <div class="bsub">de estudiante a profesional</div>
+    <div class="two-col">
+      <div class="racha-block">
+        <div class="racha-label">Racha sin fallos</div>
+        <div class="racha-num" id="rachaNum">0</div>
+        <div class="racha-fire" id="rachaFire">⚡</div>
+        <div class="racha-mot" id="rachaMot">¡Empieza hoy!</div>
+        <div class="racha-sub" id="rachaSub"></div>
+        <div class="racha-best" id="rachaBest"></div>
+      </div>
+      <div class="q-block" id="qBlock"></div>
     </div>
-    <div class="q-block" id="qb">
-      <div class="qtxt" style="color:rgba(255,255,255,.4)">Cargando...</div>
+  </div>
+  <div class="prize-overlay" id="prizeOverlay">
+    <div class="prize-box" id="prizeBox">
+      <div class="prize-e" id="prizeE">🏆</div>
+      <div class="prize-t" id="prizeT">¡Correcto!</div>
+      <div class="prize-d" id="prizeD"></div>
+      <button class="prize-close" onclick="closePrize()">Seguir →</button>
     </div>
   </div>
 </div>
-<div class="ov" id="ov">
-  <div class="pb" id="pbox">
-    <div class="pe" id="pe">🏆</div>
-    <div class="pt" id="pt">¡Correcto!</div>
-    <div class="pd" id="pd"></div>
-    <button class="pc" onclick="closeP()">Seguir →</button>
-  </div>
-</div>
+
 <script>
-var QS=[
-{t:'mc',h:'¿Sabías que...',q:'¿Qué significa FIFO en gestión de almacén?',o:['First In First Out','Fast Inventory Flow Order','Full Item Final Output','Fixed Index For Orders'],a:0,f:'Lo primero que entra es lo primero que sale. Esencial en productos con caducidad.'},
-{t:'mc',h:'¿Cuál crees que es...', q:'¿Cuál es la unidad de medida de los contenedores marítimos?',o:['TEU (Twenty-foot Equivalent Unit)','CEU (Container Equivalent Unit)','PEU (Port Entry Unit)','MEU (Maritime Export Unit)'],a:0,f:'Hay más de 800 millones de movimientos TEU anuales en todo el mundo.'},
-{t:'mc',h:'¡Adivina si puedes!',q:'¿Qué porcentaje del precio final puede representar el coste logístico?',o:['Entre el 5% y el 15%','Menos del 1%','Siempre el 20% exacto','Entre el 50% y el 70%'],a:0,f:'En alimentación fresca puede llegar hasta el 25-30% del precio final.'},
-{t:'mc',h:'¿Sabías que...',q:'Los primeros 3 dígitos del código EAN-13 identifican:',o:['El país del fabricante','El precio del producto','La fecha de fabricación','La categoría del artículo'],a:0,f:'España usa el prefijo 84. Puedes saber el origen de cualquier producto mirando el EAN.'},
-{t:'mc',h:'¿Te lo imaginas?',q:'¿Cuántos km puede caminar al día un operario en un almacén grande?',o:['Entre 15 y 25 km','Menos de 3 km','Entre 5 y 8 km','Más de 50 km'],a:0,f:'Por eso el diseño de rutas de picking es crucial para reducir fatiga y tiempo.'},
-{t:'mc',h:'¡Pon a prueba tu criterio!',q:'¿Qué es el efecto látigo en logística?',o:['Amplificación de variaciones de demanda en la cadena','Un tipo de transporte especial','Oscilación de precios en Bolsa','Fallo mecánico en carretillas'],a:0,f:'Una pequeña variación en demanda final puede multiplicarse x10 en los proveedores.'},
-{t:'mc',h:'¿Cuántos caben?',q:'¿Cuántos palets EUR caben en un camión tráiler de 13,6 m?',o:['33 palets','20 palets','50 palets','15 palets'],a:0,f:'El palet europeo (1200x800mm) está diseñado exactamente para optimizar este espacio.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es un almacén caótico?',o:['Mercancía sin ubicación fija, gestionada por software','Un almacén sin gestión visible','Un almacén de residuos','Un almacén en obras'],a:0,f:'El software sabe siempre dónde está cada artículo aunque cambie de ubicación.'},
-{t:'mc',h:'¡Decide como un profesional!',q:'¿Qué sistema de picking tiene menor tasa de error?',o:['Picking por voz','Picking en papel','Picking por memoria','Picking por SMS'],a:0,f:'El picking por voz puede alcanzar 99,9% de precisión y libera las manos del operario.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Quién usa más el cross-docking en España?',o:['Supermercados y distribución de alimentación','Librerías y papelerías','Ferreterías industriales','Tiendas de lujo'],a:0,f:'Mercadona y Lidl son referentes en cross-docking para mercancía fresca.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué significa SKU en gestión de almacén?',o:['Stock Keeping Unit','Stock Kilómetro Útil','Sistema de Kardex Universal','Servicio de Kitting Unificado'],a:0,f:'Cada variante de producto (talla, color, modelo) tiene su propio SKU único.'},
-{t:'mc',h:'¡Sorpréndete!',q:'¿Cuántos robots tiene Amazon en sus almacenes?',o:['Más de 750.000 (Amazon Robotics)','Unos 10.000','50.000 FulfillBot','Solo 5.000 en EE.UU.'],a:0,f:'Amazon adquirió Kiva Systems en 2012 por 775 millones de dólares solo por su tecnología.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué norma regula el transporte de mercancías peligrosas por carretera?',o:['ADR','IATA','CMR','FIATA'],a:0,f:'ADR: Acuerdo Europeo sobre Transporte Internacional de Mercancías Peligrosas por Carretera.'},
-{t:'mc',h:'¿Qué harías tú?',q:'Llega una mercancía dañada al almacén. ¿Qué haces primero?',o:['Anotar reserva en el albarán y fotografiar el daño','Aceptarla y reclamar después','Rechazarla sin documentar nada','Llamar al jefe antes de hacer nada'],a:0,f:'Sin reserva en el albarán es muy difícil reclamar al transportista después.'},
-{t:'mc',h:'¡Decide!',q:'¿Qué modelo de inventario usa cantidad fija de pedido?',o:['Modelo Q (punto de pedido fijo)','Modelo P (revisión periódica)','Modelo LIFO','Modelo ABC'],a:0,f:'El modelo Q lanza un pedido siempre de la misma cantidad cuando el stock baja del punto de pedido.'},
-{t:'mc',h:'¿Sabías que...',q:'El método ABC clasifica los artículos por:',o:['Valor económico que representan','Peso y volumen','Fecha de caducidad','Proveedor de origen'],a:0,f:'El 20% de los artículos tipo A suele representar el 80% del valor total del inventario.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el stock de seguridad?',o:['Reserva para cubrir variaciones de demanda o retrasos','El stock mínimo legal','El inventario físico anual','Stock guardado para inspecciones'],a:0,f:'Sin stock de seguridad, cualquier retraso del proveedor puede paralizar las ventas.'},
-{t:'mc',h:'¡Ponlo a prueba!',q:'¿Qué EPI es obligatorio en zonas con carretillas elevadoras?',o:['Calzado de seguridad y casco','Solo guantes','Solo chaleco reflectante','Ninguno si hay señalización'],a:0,f:'La normativa PRL exige calzado de seguridad y casco en zonas con riesgo de caída de objetos.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es un WMS?',o:['Warehouse Management System','Wireless Merchandise Scanner','Weekly Management Summary','Work Machine Station'],a:0,f:'Un WMS controla ubicaciones, movimientos, picking y expedición en tiempo real.'},
-{t:'mc',h:'¡Dato curioso!',q:'¿Cuál es la temperatura mínima de almacenamiento de productos ultracongelados?',o:['-18°C o inferior','-5°C','+2°C a +5°C','0°C exacto'],a:0,f:'Por ley deben mantenerse a -18°C o menos durante toda la cadena de frío.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Qué significa punto de pedido en gestión de stocks?',o:['Nivel de stock que activa un nuevo pedido','El precio mínimo de compra','La cantidad máxima almacenable','El plazo de entrega del proveedor'],a:0,f:'Se calcula teniendo en cuenta el consumo medio y el plazo de entrega del proveedor.'},
-{t:'mc',h:'¡Decide como un jefe!',q:'¿Qué documento acredita la entrega de mercancía?',o:['Albarán de entrega firmado','Factura proforma','Nota de cargo','Pedido de compra'],a:0,f:'El albarán firmado es la prueba legal de que la mercancía fue recibida en las condiciones pactadas.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué significa LIFO en valoración de existencias?',o:['Last In First Out','Last Item For Order','Low Inventory Fixed Output','Logistics Index For Operations'],a:0,f:'LIFO ya no está permitido en España según el Plan General Contable vigente.'},
-{t:'mc',h:'¿Cuál es más eficiente?',q:'¿Qué layout de almacén facilita más el flujo de mercancías?',o:['Flujo en línea recta (entrada y salida opuestas)','Flujo en U (entrada y salida juntas)','Flujo en zigzag','Flujo circular'],a:0,f:'El flujo en línea recta es ideal para cross-docking. El flujo en U es más habitual en almacenes polivalentes.'},
-{t:'mc',h:'¡Dato que no esperabas!',q:'¿Cuánto puede pesar como máximo una carga manual sin ayuda mecánica?',o:['25 kg en condiciones óptimas','50 kg','10 kg','No hay límite legal'],a:0,f:'Para mujeres embarazadas o jóvenes el límite baja a 10-15 kg.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el picking por oleadas?',o:['Agrupar pedidos por zonas o turnos para optimizar rutas','Hacer picking en zonas refrigeradas','Seleccionar productos de alta rotación primero','Recoger artículos siguiendo el orden del EAN'],a:0,f:'Las oleadas reducen los km recorridos y permiten preparar muchos pedidos a la vez.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué color de señal indica PROHIBICIÓN en seguridad laboral?',o:['Rojo y blanco','Amarillo y negro','Verde y blanco','Azul y blanco'],a:0,f:'Rojo=prohibición. Amarillo=advertencia. Verde=evacuación. Azul=obligación.'},
-{t:'mc',h:'¡Ponlo a prueba!',q:'En un inventario, ¿qué es la diferencia de inventario?',o:['Diferencia entre stock teórico y stock real','El tiempo entre dos inventarios','El coste de hacer el recuento','El número de referencias contadas'],a:0,f:'Las mermas, robos y errores de registro son las principales causas de diferencias de inventario.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el lote económico de pedido EOQ?',o:['Cantidad que minimiza costes de pedido y almacenamiento','El lote mínimo del proveedor','La cantidad máxima que cabe en el almacén','El pedido de emergencia'],a:0,f:'La fórmula EOQ fue desarrollada por Ford Harris en 1913 y sigue usándose hoy.'},
-{t:'mc',h:'¡Decide!',q:'¿Qué carretilla se usa en pasillos muy estrechos?',o:['Carretilla retráctil o tridireccional','Carretilla frontal estándar','Transpaleta manual','Apilador eléctrico de pie'],a:0,f:'Las carretillas trilaterales pueden trabajar en pasillos de tan solo 1,6 m de ancho.'},
-{t:'mc',h:'¿Cuál crees que...',q:'¿Qué es el lead time o plazo de entrega?',o:['Tiempo desde el pedido hasta que llega al almacén','El plazo de pago al proveedor','El tiempo de descarga de un camión','El plazo de garantía del producto'],a:0,f:'Un lead time largo obliga a tener más stock de seguridad para no quedarse sin existencias.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Qué es la trazabilidad de un producto?',o:['Seguimiento a lo largo de toda la cadena de suministro','El peso total de una remesa','La ruta del camión de reparto','El número de albaranes generados'],a:0,f:'Obligatoria en alimentación desde el Reglamento CE 178/2002.'},
-{t:'mc',h:'¡Sorpréndete!',q:'¿Cuántos tipos de señales de seguridad hay en la normativa española?',o:['4 tipos (prohibición, advertencia, obligación, emergencia)','2 tipos','6 tipos','Solo 1 tipo normalizado'],a:0,f:'Regulados por el RD 485/1997 sobre señalización de seguridad en el trabajo.'},
-{t:'mc',h:'¿Cuál elegirías?',q:'Para artículos tipo A (alta rotación), ¿dónde los ubicarías?',o:['Cerca de las zonas de picking y expedición','Al fondo del almacén','En las zonas más altas de las estanterías','Junto a la entrada de proveedores'],a:0,f:'Reducir desplazamientos de los productos más movidos puede ahorrar hasta un 30% del tiempo.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el picking por voz?',o:['Sistema que guía al operario mediante instrucciones de audio','Una app para hablar con el proveedor','Un sistema de grabación de incidencias','Una técnica de negociación'],a:0,f:'Se puede combinar con gafas de realidad aumentada para maximizar la precisión.'},
-{t:'mc',h:'¡Ponlo a prueba!',q:'¿Qué es la hoja de ruta en expedición?',o:['Documento con las paradas y entregas del transporte','El mapa del almacén','El plan de formación del personal','El registro de incidencias del día'],a:0,f:'La hoja de ruta optimizada reduce km, tiempo y costes de combustible del transportista.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es la merma en gestión de almacén?',o:['Pérdida de existencias por rotura, caducidad o robo','El exceso de stock sin vender','El descuento por volumen de compra','La diferencia entre precio de compra y venta'],a:0,f:'Las mermas pueden representar entre el 1% y el 3% de las ventas en supermercados.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Cuál es el objetivo del inventario rotativo?',o:['Contar partes del almacén continuamente sin parar la operativa','Hacer un recuento total una vez al año','Inventariar solo los productos tipo A','Contar el stock los fines de semana'],a:0,f:'El inventario rotativo detecta errores antes de que se acumulen y afecten a los pedidos.'},
-{t:'mc',h:'¡Dato que no esperabas!',q:'¿Qué es la cadena de frío?',o:['Control continuo de temperatura desde origen hasta destino','El transporte refrigerado de corta distancia','El almacenamiento de productos congelados','La normativa de transporte nocturno'],a:0,f:'Romper la cadena de frío aunque sea una hora puede inutilizar un cargamento farmacéutico entero.'},
-{t:'mc',h:'¿Cuál crees que...',q:'¿Qué es el RFID en logística?',o:['Tecnología de identificación por radiofrecuencia sin contacto','Un tipo de código de barras','Un sistema GPS para camiones','Un protocolo wifi'],a:0,f:'Un lector RFID puede identificar miles de artículos por segundo sin línea de visión directa.'},
-{t:'mc',h:'¡Dato curioso!',q:'¿Cuánto puede costar un error de picking en e-commerce?',o:['Entre 15€ y 50€ incluyendo devolución y reenvío','Solo el coste del producto','Menos de 2€ de media','Más de 500€ siempre'],a:0,f:'Un 1% de errores en 10.000 pedidos/día = 100 problemas diarios. La precisión es crítica.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el reaprovisionamiento automático?',o:['Sistema que lanza pedidos al bajar del punto de pedido','Reponer estanterías cada día manualmente','Pedir siempre la misma cantidad cada semana','Abastecimiento sin pedido previo'],a:0,f:'Los sistemas automáticos pueden reducir las roturas de stock un 40-60%.'},
-{t:'mc',h:'¡Decide como un profesional!',q:'¿Qué acción reduce más el riesgo de accidente con carretilla?',o:['Separar físicamente zonas de peatones y carretillas','Limitar la velocidad a 20 km/h','Usar carretillas de color llamativo','Colocar espejos en los pasillos'],a:0,f:'La separación física con barreras es 10 veces más eficaz que las señales horizontales.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Qué es el código QR en logística?',o:['Código 2D que almacena mucha más info que un código de barras','Un tipo de etiqueta RFID','El código del transportista','Un sistema de tracking GPS'],a:0,f:'Un código QR puede almacenar hasta 7.000 caracteres. Un EAN-13 solo 13 dígitos.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el mapa de calor en un almacén?',o:['Representación visual de las zonas con más actividad','Un sistema de detección de incendios','El plano de instalaciones eléctricas','El registro de temperaturas de la cámara'],a:0,f:'Los mapas de calor ayudan a rediseñar la distribución del almacén para minimizar desplazamientos.'},
-{t:'mc',h:'¡Dato curioso!',q:'¿Cuál es la tara de un vehículo de transporte?',o:['El peso del vehículo sin carga','El peso máximo transportable','El peso de la carga más el vehículo','El peso de la documentación'],a:0,f:'Peso bruto = tara + carga útil. Los camiones de 40t tienen una tara de unos 8-10t.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué significa Full Truck Load FTL?',o:['Carga completa de un camión para un solo cliente','Un tipo de seguro de transporte','El peso máximo legal de un camión','Un sistema de seguimiento GPS'],a:0,f:'Opuesto al LTL (Less than Truck Load), donde varios clientes comparten el camión.'},
-{t:'mc',h:'¿Cuál crees que...',q:'¿Qué es el número de lote en trazabilidad?',o:['Código que identifica productos fabricados en las mismas condiciones','El número de palet en el almacén','El código del proveedor','El número de albarán de recepción'],a:0,f:'El número de lote permite retirar solo los productos afectados en caso de alerta sanitaria.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Qué es un pick to light?',o:['Sistema de luces que indica dónde recoger y cuántas unidades','Un tipo de iluminación de emergencia','Una app de localización de productos','El indicador luminoso de la carretilla'],a:0,f:'Los sistemas pick-to-light reducen los tiempos de formación de nuevos operarios hasta un 70%.'},
-{t:'drag',h:'¡Ordena si eres capaz!',q:'Ordena el proceso de recepción (toca un chip y luego una ranura):',i:['Firma del albarán','Descarga del camión','Comprobación con pedido','Ubicación en almacén','Inspección visual'],o:[1,0,2,4,3],f:'Una recepción bien hecha evita el 60% de las incidencias posteriores con proveedores.'},
-{t:'drag',h:'¿Sabes el orden?',q:'Ordena las fases de expedición (toca un chip y luego una ranura):',i:['Generación de albarán','Recepción del pedido','Embalaje y etiquetado','Picking de referencias','Carga en transporte'],o:[1,0,3,2,4],f:'Un error en expedición llega directamente al cliente. Es tan crítica como la recepción.'},
-{t:'drag',h:'¡Clasifica por valor!',q:'Ordena de mayor a menor prioridad según el método ABC:',i:['Artículos tipo C (60% ref, 5% valor)','Artículos tipo A (20% ref, 80% valor)','Artículos tipo B (30% ref, 15% valor)'],o:[1,2,0],f:'El análisis ABC concentra el esfuerzo de gestión donde más valor económico hay en juego.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el just-in-time JIT?',o:['Recibir materiales justo cuando se necesitan sin stock','Entregar pedidos urgentes en menos de 24h','Un software de gestión japonés','Un tipo de contrato de transporte'],a:0,f:'Toyota inventó el JIT en los años 50. Hoy es la base de muchos sistemas de distribución modernos.'},
-{t:'mc',h:'¿Cuál elegirías?',q:'¿Qué tipo de transporte tiene mayor capacidad pero menor velocidad?',o:['Marítimo','Aéreo','Por carretera','Por ferrocarril'],a:0,f:'Un portacontenedores puede cargar el equivalente a 15.000 camiones. El 90% del comercio mundial va por mar.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el nivel de servicio en logística?',o:['Porcentaje de pedidos entregados completos y a tiempo','La calidad de atención al cliente','El número de transportistas disponibles','El precio del servicio logístico'],a:0,f:'Un nivel de servicio del 95% significa que 1 de cada 20 pedidos tiene algún problema.'},
-{t:'mc',h:'¡Ponlo a prueba!',q:'¿Cuál es la función principal del muelle de carga?',o:['Conexión entre el almacén y los vehículos de transporte','La zona de oficinas del almacén','El área de almacenamiento temporal','La salida de emergencia'],a:0,f:'Un muelle bien equipado puede reducir el tiempo de carga/descarga hasta un 50%.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es la consolidación de cargas?',o:['Agrupar envíos de varios clientes en un mismo vehículo','Asegurar la carga contra movimientos','Paletizar la mercancía antes de expedir','Sellar los embalajes con flejes'],a:0,f:'La consolidación puede reducir el coste de transporte hasta un 70% frente a envíos individuales.'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Qué es el picking por lotes?',o:['Recoger varios pedidos a la vez para optimizar el recorrido','Seleccionar productos por fecha de caducidad','Recoger solo artículos pesados','Hacer picking en lotes horarios fijos'],a:0,f:'El batch picking puede multiplicar por 3-5 la productividad frente al picking pedido a pedido.'},
-{t:'mc',h:'¿Cuál crees que...',q:'¿Qué tipo de riesgo es específico del trabajo en almacén?',o:['Atropello por carretilla, caída de objetos y sobreesfuerzo','Solo el estrés laboral','Exposición a pantallas','Riesgo eléctrico de oficina'],a:0,f:'Los accidentes con carretillas causan más de 25.000 lesiones graves al año solo en Europa.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es el Incoterm DDP en comercio internacional?',o:['El vendedor asume todos los costes hasta el destino final','El comprador paga todos los impuestos','El transporte es compartido al 50%','Solo aplica a transporte marítimo'],a:0,f:'DDP es el Incoterm con más responsabilidad para el vendedor. El opuesto es EXW (Ex Works).'},
-{t:'mc',h:'¿Lo sabías?',q:'¿Qué norma ISO se aplica a sistemas de gestión de la calidad?',o:['ISO 9001','ISO 14001','ISO 45001','ISO 28000'],a:0,f:'ISO 9001 es la norma de calidad más certificada del mundo con más de 1 millón de empresas certificadas.'},
-{t:'mc',h:'¿Cuál elegirías?',q:'¿Qué sistema es mejor para artículos de alta rotación?',o:['Estantería dinámica con rodillos (flow rack)','Almacén automático de palés en altura','Almacenamiento en bloque sin estanterías','Armario de seguridad bajo llave'],a:0,f:'Las estanterías dinámicas usan la gravedad y garantizan FIFO automáticamente.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es la ergonomía en el puesto de trabajo del almacén?',o:['Adaptar el trabajo a las capacidades del trabajador para prevenir lesiones','La decoración del almacén','El estudio de los tiempos de trabajo','La organización de los turnos'],a:0,f:'Las lesiones musculoesqueléticas son la primera causa de baja laboral en el sector logístico.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el stock en tránsito?',o:['Mercancía siendo transportada que aún no llegó al almacén destino','El stock en zona de expedición','El inventario en curso de producción','El stock de exposición en tienda'],a:0,f:'En grandes empresas el stock en tránsito puede suponer varios millones de euros inmovilizados.'},
-{t:'mc',h:'¡Decide!',q:'¿Qué es el tiempo de ciclo en un almacén?',o:['Tiempo total desde que llega un pedido hasta que sale expedido','El tiempo de un turno de trabajo','El tiempo de descarga de un camión','La duración del inventario anual'],a:0,f:'Reducir el tiempo de ciclo es el principal objetivo de la optimización logística en e-commerce.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es la rotación de stocks?',o:['Número de veces que se renueva el stock en un período','El movimiento físico en el almacén','El cambio de ubicación de los productos','La sustitución de productos obsoletos'],a:0,f:'Una alta rotación indica eficiencia. Una rotación baja puede significar sobrestock o productos sin salida.'},
-{t:'mc',h:'¡Dato curioso!',q:'¿Qué es el embalaje secundario de un producto?',o:['El que agrupa varias unidades de venta (caja, bandeja)','El envase que toca el producto','El plástico de paletización','El contenedor de transporte marítimo'],a:0,f:'El embalaje primario toca el producto, el secundario lo agrupa y el terciario lo prepara para transporte.'},
-{t:'mc',h:'¿Cuál crees que...',q:'¿Qué herramienta se usa para medir la productividad de un almacén?',o:['KPIs logísticos (líneas/hora, coste por pedido)','Solo la opinión del jefe','El número de empleados','El tamaño del almacén en m²'],a:0,f:'Los KPIs logísticos permiten comparar rendimiento con la competencia mediante benchmarking sectorial.'},
-{t:'mc',h:'¿Sabías que...',q:'¿Qué es un operador logístico integral?',o:['Empresa que gestiona transporte, almacenaje y distribución para terceros','Un transportista autónomo','El departamento de logística de una empresa','Una empresa de mensajería urgente'],a:0,f:'DHL, XPO, ID Logistics o DSV son ejemplos de operadores logísticos integrales en España.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el flujo tenso en logística?',o:['Abastecer la producción sin apenas stock intermedio','Un tipo de transporte urgente','El flujo de mercancía peligrosa','El movimiento rápido en almacén'],a:0,f:'El flujo tenso es el extremo del just-in-time: la mercancía llega justo cuando se necesita.'}
+const QS = [
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué significa FIFO en gestión de almacén?',opts:['First In First Out','Fast Inventory Flow Order','Full Item Final Output','Fixed Index For Orders'],ans:0,fact:'Significa que lo primero que entra es lo primero que sale. Esencial en productos con caducidad.'},
+  {type:'mc',hook:'¿Cuál crees que es...', q:'¿Cuál es la unidad de medida de los contenedores marítimos?',opts:['TEU (Twenty-foot Equivalent Unit)','CEU (Container Equivalent Unit)','PEU (Port Entry Unit)','MEU (Maritime Export Unit)'],ans:0,fact:'Hay más de 800 millones de movimientos TEU anuales en todo el mundo.'},
+  {type:'mc',hook:'¡Adivina si puedes!', q:'¿Qué porcentaje del precio final puede representar el coste logístico?',opts:['Entre el 5% y el 15%','Menos del 1%','Siempre exactamente el 20%','Entre el 50% y el 70%'],ans:0,fact:'En alimentación fresca puede llegar hasta el 25-30% del precio final.'},
+  {type:'mc',hook:'¿Sabías que...', q:'Los primeros 3 dígitos del código EAN-13 identifican:',opts:['El país del fabricante','El precio del producto','La fecha de fabricación','La categoría del artículo'],ans:0,fact:'España usa el prefijo 84. Puedes saber el origen de cualquier producto mirando el EAN.'},
+  {type:'mc',hook:'¿Te lo imaginas?', q:'¿Cuántos km puede caminar al día un operario en un almacén grande?',opts:['Entre 15 y 25 km','Menos de 3 km','Entre 5 y 8 km','Más de 50 km'],ans:0,fact:'Por eso el diseño de rutas de picking es crucial para reducir fatiga y tiempo.'},
+  {type:'mc',hook:'¡Pon a prueba tu criterio!', q:'¿Qué es el "efecto látigo" en logística?',opts:['Amplificación de variaciones de demanda hacia atrás en la cadena','Un tipo de transporte especial','Oscilación de precios en Bolsa','Fallo mecánico en carretillas elevadoras'],ans:0,fact:'Una pequeña variación en la demanda final puede multiplicarse x10 en los proveedores.'},
+  {type:'mc',hook:'¿Cuántos caben? ¡Sorpréndete!', q:'¿Cuántos palets EUR caben en un camión tráiler de 13,6 m?',opts:['33 palets','20 palets','50 palets','15 palets'],ans:0,fact:'El palet europeo (1200x800mm) está diseñado exactamente para optimizar este espacio.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es un almacén "caótico"?',opts:['Mercancía sin ubicación fija, gestionada por software','Un almacén sin gestión visible','Un almacén de residuos industriales','Un almacén en obras'],ans:0,fact:'Es altamente eficiente: el software sabe siempre dónde está cada artículo aunque cambie de ubicación.'},
+  {type:'mc',hook:'¡Decide como un profesional!', q:'¿Qué sistema de picking tiene menor tasa de error?',opts:['Picking por voz','Picking en papel','Picking por memoria','Picking por SMS'],ans:0,fact:'El picking por voz puede alcanzar 99,9% de precisión y libera las manos del operario.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'El cross-docking elimina casi el almacenamiento. ¿Quién lo usa más?',opts:['Supermercados y distribución de alimentación','Librerías y papelerías','Ferreterías industriales','Tiendas de artículos de lujo'],ans:0,fact:'Mercadona y Lidl son referentes en cross-docking para mercancía fresca en España.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué significa SKU en gestión de almacén?',opts:['Stock Keeping Unit','Stock Kilómetro Útil','Sistema de Kardex Universal','Servicio de Kitting Unificado'],ans:0,fact:'Cada variante de producto (talla, color, modelo) tiene su propio SKU único en el sistema.'},
+  {type:'mc',hook:'¡Sorpréndete!', q:'Amazon tiene más de 750.000 robots en sus almacenes. ¿Cómo se llaman?',opts:['Amazon Robotics (antes Kiva)','RoboAmazon','FulfillBot','LogiDroid'],ans:0,fact:'Amazon adquirió Kiva Systems en 2012 por 775 millones de dólares solo por su tecnología robótica.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué norma regula el transporte de mercancías peligrosas por carretera?',opts:['ADR','IATA','CMR','FIATA'],ans:0,fact:'El ADR es el Acuerdo Europeo sobre Transporte Internacional de Mercancías Peligrosas por Carretera.'},
+  {type:'mc',hook:'¿Qué harías tú?', q:'Una mercancía llega dañada al almacén. Lo primero que debes hacer es:',opts:['Anotar reserva en el albarán y fotografiar el daño','Aceptarla y reclamar después','Rechazarla sin documentar','Llamar al jefe antes de hacer nada'],ans:0,fact:'Sin reserva en el albarán, es muy difícil reclamar al transportista después.'},
+  {type:'mc',hook:'¡Decide!', q:'¿Qué modelo de inventario usa cantidad fija de pedido?',opts:['Modelo Q (punto de pedido fijo)','Modelo P (revisión periódica)','Modelo LIFO','Modelo ABC'],ans:0,fact:'El modelo Q lanza un pedido siempre de la misma cantidad cuando el stock baja del punto de pedido.'},
+  {type:'mc',hook:'¿Sabías que...', q:'El método ABC de gestión de stocks clasifica los artículos por:',opts:['Valor económico que representan','Peso y volumen','Fecha de caducidad','Proveedor de origen'],ans:0,fact:'El 20% de los artículos (tipo A) suele representar el 80% del valor total del inventario.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué es el stock de seguridad?',opts:['Reserva para cubrir variaciones de demanda o retraso de entregas','El stock mínimo legal obligatorio','El inventario físico anual','El stock que se guarda para inspecciones'],ans:0,fact:'Sin stock de seguridad, cualquier retraso del proveedor puede paralizar las ventas o la producción.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Qué EPI es obligatorio en zonas de trabajo con carretillas elevadoras?',opts:['Calzado de seguridad y casco','Solo guantes','Solo chaleco reflectante','Ninguno si hay señalización'],ans:0,fact:'La normativa PRL exige calzado de seguridad y casco en zonas con riesgo de caída de objetos.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es un WMS?',opts:['Warehouse Management System (sistema de gestión de almacén)','Wireless Merchandise Scanner','Weekly Management Summary','Work Machine Station'],ans:0,fact:'Un WMS controla ubicaciones, movimientos, picking y expedición en tiempo real.'},
+  {type:'mc',hook:'¡Dato curioso!', q:'¿Cuál es la temperatura de almacenamiento de los productos ultracongelados?',opts:['-18°C o inferior','-5°C','+2°C a +5°C','0°C exacto'],ans:0,fact:'Por ley, los productos ultracongelados deben mantenerse a -18°C o menos durante toda la cadena de frío.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué tipo de estantería se usa para palets en almacenes convencionales?',opts:['Estantería paletizada (rack selectivo)','Estantería cantilever','Estantería de archivo','Mezzanine'],ans:0,fact:'El rack selectivo da acceso directo a cada palet y es el más usado en almacenes generalistas.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué significa "punto de pedido" en gestión de stocks?',opts:['Nivel de stock que activa un nuevo pedido','El precio mínimo de compra','La cantidad máxima almacenable','El plazo de entrega del proveedor'],ans:0,fact:'El punto de pedido se calcula teniendo en cuenta el consumo medio y el plazo de entrega.'},
+  {type:'mc',hook:'¡Decide como un jefe de almacén!', q:'¿Qué documento acredita la entrega de mercancía entre transportista y destinatario?',opts:['Albarán de entrega','Factura proforma','Nota de cargo','Pedido de compra'],ans:0,fact:'El albarán firmado es la prueba legal de que la mercancía fue recibida en las condiciones pactadas.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué significa LIFO en valoración de existencias?',opts:['Last In First Out','Last Item For Order','Low Inventory Fixed Output','Logistics Index For Operations'],ans:0,fact:'LIFO valora el stock como si lo último que entró fuera lo primero en salir. Ya no está permitido en España según el PGC.'},
+  {type:'mc',hook:'¿Cuál es más eficiente?', q:'¿Qué layout de almacén facilita más el flujo de mercancías?',opts:['Flujo en línea recta (entrada-salida opuestas)','Flujo en U (entrada-salida juntas)','Flujo en zigzag','Flujo circular'],ans:0,fact:'El flujo en línea recta es ideal para cross-docking. El flujo en U es más habitual en almacenes polivalentes.'},
+  {type:'mc',hook:'¡Dato que no esperabas!', q:'¿Cuánto puede pesar como máximo una carga manual sin ayuda mecánica según el INSST?',opts:['25 kg en condiciones óptimas','50 kg','10 kg','No hay límite legal'],ans:0,fact:'Para mujeres embarazadas o jóvenes el límite baja a 10-15 kg. La clave es la postura y la frecuencia.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "picking por oleadas"?',opts:['Agrupar pedidos por zonas o turnos para optimizar rutas','Hacer picking con agua en zonas refrigeradas','Seleccionar productos de alta rotación primero','Recoger artículos siguiendo el orden del EAN'],ans:0,fact:'Las oleadas reducen los km recorridos y permiten preparar muchos pedidos simultáneamente.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué color de señal indica PROHIBICIÓN en seguridad laboral?',opts:['Rojo y blanco','Amarillo y negro','Verde y blanco','Azul y blanco'],ans:0,fact:'Rojo = prohibición o peligro. Amarillo = advertencia. Verde = evacuación o primeros auxilios. Azul = obligación.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'En un inventario, ¿qué es la "diferencia de inventario"?',opts:['Diferencia entre stock teórico y stock real','El tiempo entre dos inventarios','El coste de hacer el recuento','El número de referencias contadas'],ans:0,fact:'Las mermas, robos y errores de registro son las principales causas de diferencias de inventario.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "lote económico de pedido" (EOQ)?',opts:['Cantidad óptima que minimiza costes de pedido y almacenamiento','El lote mínimo que acepta el proveedor','La cantidad máxima que cabe en el almacén','El pedido urgente de emergencia'],ans:0,fact:'La fórmula EOQ fue desarrollada por Ford Harris en 1913. Sigue siendo la base de muchos sistemas de reposición.'},
+  {type:'mc',hook:'¡Decide!', q:'¿Qué tipo de carretilla se usa para mover palets en pasillos estrechos?',opts:['Carretilla retráctil o tridireccional','Carretilla frontal estándar','Transpaleta manual','Apilador eléctrico de pie'],ans:0,fact:'Las carretillas trilaterales pueden trabajar en pasillos de tan solo 1,6 m de ancho.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué es el "plazo de entrega" o lead time en logística?',opts:['Tiempo desde que se hace el pedido hasta que llega al almacén','El plazo de pago al proveedor','El tiempo de descarga de un camión','El plazo de garantía del producto'],ans:0,fact:'Un lead time largo obliga a tener más stock de seguridad para no quedarse sin existencias.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué es la trazabilidad de un producto?',opts:['Seguimiento del producto a lo largo de toda la cadena de suministro','El peso total de una remesa','La ruta del camión de reparto','El número de albaranes generados'],ans:0,fact:'La trazabilidad es obligatoria en alimentación desde el Reglamento CE 178/2002 para garantizar la seguridad alimentaria.'},
+  {type:'mc',hook:'¡Sorpréndete!', q:'¿Cuántos tipos de señales de seguridad existen según la normativa española?',opts:['4 tipos (prohibición, advertencia, obligación, emergencia)','2 tipos (peligro y seguridad)','6 tipos','Solo 1 tipo normalizado'],ans:0,fact:'Cada color tiene un significado específico regulado por el RD 485/1997 sobre señalización de seguridad.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "embalaje secundario" de un producto?',opts:['El que agrupa varias unidades de venta (caja, bandeja)','El envase que toca directamente el producto','El plástico de paletización','El contenedor de transporte marítimo'],ans:0,fact:'El embalaje primario toca el producto, el secundario lo agrupa y el terciario lo prepara para transporte.'},
+  {type:'mc',hook:'¿Cuál elegirías?', q:'Para almacenar productos con mucha rotación (tipo A), ¿dónde los ubicarías?',opts:['Cerca de las zonas de picking y expedición','Al fondo del almacén para seguridad','En las zonas más altas de las estanterías','Junto a la zona de carga/descarga principal'],ans:0,fact:'Reducir los desplazamientos de los productos más movidos puede ahorrar hasta un 30% del tiempo de operación.'},
+  {type:'mc',hook:'¡Dato curioso!', q:'¿Qué es el "picking por voz" o voice picking?',opts:['Sistema que guía al operario mediante instrucciones de audio','Una app para hablar con el proveedor','Un sistema de grabación de incidencias','Una técnica de negociación con clientes'],ans:0,fact:'Se puede combinar con gafas de realidad aumentada (pick-to-light + voice) para maximizar la precisión.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "despacho de aduana"?',opts:['Trámite para que la mercancía pueda entrar o salir de un territorio aduanero','La zona de descarga de un aeropuerto','El impuesto sobre importaciones','El permiso para transportar mercancía peligrosa'],ans:0,fact:'Sin despacho aduanero, la mercancía no puede circular legalmente entre países con distintos regímenes fiscales.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'En expedición, ¿qué es la "hoja de ruta"?',opts:['Documento con las paradas y entregas que hará el transporte','El mapa del almacén','El plan de formación del personal','El registro de incidencias del día'],ans:0,fact:'La hoja de ruta optimizada reduce kilómetros, tiempo y costes de combustible del transportista.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué es el "merma" en gestión de almacén?',opts:['Pérdida de existencias por rotura, caducidad o robo','El exceso de stock sin vender','El descuento por volumen de compra','La diferencia entre precio de compra y venta'],ans:0,fact:'Las mermas pueden representar entre el 1% y el 3% de las ventas en supermercados.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué normativa regula la prevención de riesgos laborales en España?',opts:['Ley 31/1995 de PRL','RD 1627/1997','Ley 16/1987 de transportes','ISO 9001:2015'],ans:0,fact:'La Ley de PRL obliga a evaluar y controlar todos los riesgos del puesto de trabajo, incluidos los ergonómicos.'},
+  {type:'mc',hook:'¡Decide como un profesional!', q:'¿Qué es el "SGA" o WMS?',opts:['Sistema de Gestión de Almacenes','Sistema de Gestión Administrativa','Software de Gestión de Agencias','Servicio de Gestión Automatizada'],ans:0,fact:'Un SGA moderno puede gestionar en tiempo real millones de movimientos diarios con mínimo error humano.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Cuál es el objetivo principal del "inventario rotativo"?',opts:['Contar partes del almacén de forma continua sin parar la operativa','Hacer un recuento total una vez al año','Inventariar solo los productos tipo A','Contar el stock los fines de semana'],ans:0,fact:'El inventario rotativo permite detectar errores antes de que se acumulen y afecten a los pedidos.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué significa "paletización" en logística?',opts:['Colocación y fijación de mercancía sobre un palet para facilitar su manipulación','Fabricar palets de madera','Clasificar la mercancía por peso','Etiquetar productos con código de barras'],ans:0,fact:'Una buena paletización reduce daños, optimiza espacio y agiliza la descarga hasta un 40%.'},
+  {type:'mc',hook:'¡Dato que no esperabas!', q:'¿Qué es el "packing list"?',opts:['Lista detallada del contenido de un envío o expedición','El plano de disposición del almacén','El listado de precios del proveedor','El plan de embalaje anual'],ans:0,fact:'El packing list es imprescindible en comercio internacional para el despacho aduanero.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué tipo de almacén gestiona tanto las devoluciones como los envíos?',opts:['Almacén de logística inversa','Almacén de tránsito','Almacén fiscal','Almacén de depósito'],ans:0,fact:'La logística inversa mueve el 6% del total de mercancías en Europa. Los e-commerce tienen tasas de devolución del 20-40%.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Cuál es la diferencia entre "almacén propio" y "almacén en outsourcing"?',opts:['El primero es de la empresa, el segundo lo gestiona un operador logístico','El primero es más moderno','Solo el propio tiene WMS','El outsourcing es siempre más caro'],ans:0,fact:'El outsourcing logístico permite a las empresas convertir costes fijos en variables y centrarse en su negocio principal.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué es el "código SSCC" (Serial Shipping Container Code)?',opts:['Código único que identifica una unidad logística (palet, caja de envío)','El código del proveedor','El número de serie del camión','El código del contrato de transporte'],ans:0,fact:'El SSCC es un código de 18 dígitos GS1 que permite la trazabilidad de cualquier unidad logística en todo el mundo.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es la "rotación de stocks"?',opts:['Número de veces que se renueva el stock en un período','El movimiento físico de mercancía en el almacén','El cambio de ubicación de los productos','La sustitución de productos obsoletos'],ans:0,fact:'Una alta rotación indica eficiencia. Una rotación muy baja puede significar sobrestock o productos sin salida.'},
+  {type:'mc',hook:'¡Decide!', q:'¿Qué herramienta se usa para medir la productividad de un almacén?',opts:['KPIs logísticos (líneas/hora, coste por pedido, etc.)','Solo la opinión del jefe','El número de empleados','El tamaño del almacén en m²'],ans:0,fact:'Los KPIs logísticos permiten comparar rendimiento con la competencia mediante benchmarking sectorial.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué es un "operador logístico integral"?',opts:['Empresa que gestiona transporte, almacenaje y distribución para terceros','Un transportista autónomo','El departamento de logística de una empresa','Una empresa de mensajería urgente'],ans:0,fact:'DHL, XPO, ID Logistics o DSV son ejemplos de operadores logísticos integrales que operan en España.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué es el "picking por zonas"?',opts:['Dividir el almacén en áreas y asignar operarios a cada zona','Seleccionar productos por código postal','Recoger artículos de zonas de temperatura controlada','Hacer picking solo en horas determinadas'],ans:0,fact:'El picking por zonas reduce los cruces entre operarios y permite especializar al personal por familia de producto.'},
+  {type:'drag',hook:'¡Ordena si eres capaz!', q:'Ordena el proceso de recepción de mercancía (arrastra en el orden correcto):',items:['Firma del albarán','Descarga del camión','Comprobación con pedido','Ubicación en almacén','Inspección visual'],order:[1,0,2,4,3],fact:'Una recepción bien hecha evita el 60% de las incidencias posteriores con proveedores.'},
+  {type:'drag',hook:'¿Sabes el orden?', q:'Ordena las fases del proceso de expedición:',items:['Generación de albarán','Recepción del pedido','Embalaje y etiquetado','Picking de referencias','Carga en transporte'],order:[1,0,3,2,4],fact:'La expedición correcta es tan importante como la recepción. Un error aquí llega directamente al cliente.'},
+  {type:'drag',hook:'¡Clasifica!', q:'Ordena de mayor a menor prioridad según el método ABC:',items:['Artículos tipo C (60% referencias, 5% valor)','Artículos tipo A (20% referencias, 80% valor)','Artículos tipo B (30% referencias, 15% valor)'],order:[1,2,0],fact:'El análisis ABC permite concentrar el esfuerzo de gestión donde más valor económico hay en juego.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "flujo tenso" en logística?',opts:['Abastecer la producción o distribución sin apenas stock intermedio','Un tipo de transporte urgente','El flujo de mercancía peligrosa','El movimiento rápido en almacén'],ans:0,fact:'El flujo tenso es el extremo del just-in-time: la mercancía llega justo cuando se necesita, sin pasar por almacén.'},
+  {type:'mc',hook:'¡Dato curioso!', q:'¿Qué es el "just-in-time" (JIT)?',opts:['Recibir materiales justo cuando se necesitan, eliminando stock','Entregar pedidos urgentes en menos de 24h','Un software de gestión japonés','Un tipo de contrato de transporte'],ans:0,fact:'Toyota inventó el JIT en los años 50. Hoy es la base de muchos sistemas de producción y distribución modernos.'},
+  {type:'mc',hook:'¿Cuál elegirías?', q:'Para almacenar productos muy pesados en altura, ¿qué sistema usarías?',opts:['Estanterías paletizadas con carretilla retráctil','Estanterías de cartón ondulado','Almacén automático de bandejas','Mesas de trabajo regulables'],ans:0,fact:'Las estanterías paletizadas pueden soportar varios miles de kg por nivel con los perfiles adecuados.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué indica el "nivel de servicio" en logística?',opts:['Porcentaje de pedidos entregados completos y a tiempo','La calidad de atención al cliente','El número de transportistas disponibles','El precio del servicio logístico'],ans:0,fact:'Un nivel de servicio del 95% significa que 1 de cada 20 pedidos tiene algún problema. El objetivo suele ser 99%+.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Cuál es la función del "muelle de carga" en un almacén?',opts:['Zona de conexión entre el almacén y los vehículos de transporte','La zona de oficinas del almacén','El área de almacenamiento temporal','La salida de emergencia del almacén'],ans:0,fact:'El diseño del muelle es crítico: un muelle bien equipado puede reducir el tiempo de carga/descarga hasta un 50%.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué es el "albarán de devolución"?',opts:['Documento que acredita la devolución de mercancía al proveedor','La factura rectificativa','El acuse de recibo del cliente','El informe de daños en transporte'],ans:0,fact:'Sin albarán de devolución firmado es casi imposible gestionar el abono o sustitución con el proveedor.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Cuál es la diferencia entre "almacén regulador" y "plataforma logística"?',opts:['El regulador almacena para equilibrar oferta-demanda; la plataforma redistribuye sin almacenar','Solo se diferencian por el tamaño','Uno es público y el otro privado','No hay diferencia práctica'],ans:0,fact:'Las plataformas logísticas son nodos de redistribución rápida; los almacenes reguladores compensan estacionalidad.'},
+  {type:'mc',hook:'¡Decide como un profesional!', q:'¿Qué es la "ficha de almacén" o ficha de stock?',opts:['Registro individual de entradas, salidas y existencias de cada referencia','El plano de ubicación del producto','La etiqueta del producto en la estantería','El pedido de reposición automático'],ans:0,fact:'La ficha de stock es la base del control manual de inventario. Hoy los WMS la gestionan en tiempo real.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué es el "código QR" en logística?',opts:['Código 2D que puede almacenar mucha más información que un código de barras','Un tipo de etiqueta RFID','El código del transportista','Un sistema de tracking GPS'],ans:0,fact:'Un código QR puede almacenar hasta 7.000 caracteres numéricos. Un EAN-13 solo 13 dígitos.'},
+  {type:'mc',hook:'¡Dato que no esperabas!', q:'¿Qué es la "cadena de frío"?',opts:['Control continuo de temperatura desde origen hasta destino para productos sensibles','El transporte refrigerado de corta distancia','El almacenamiento de productos congelados','La normativa de transporte nocturno'],ans:0,fact:'Romper la cadena de frío aunque sea una hora puede inutilizar un cargamento entero de productos farmacéuticos o alimentarios.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué es un "picking wall" o muro de picking?',opts:['Sistema de clasificación de pedidos por cuadrículas iluminadas','Una pared de estanterías convencionales','Un tipo de embalaje especial','El límite físico del almacén'],ans:0,fact:'Los picking walls son muy usados en e-commerce para clasificar rápidamente artículos de múltiples pedidos.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué norma ISO se aplica a sistemas de gestión de la calidad?',opts:['ISO 9001','ISO 14001','ISO 45001','ISO 28000'],ans:0,fact:'ISO 9001 es la norma de calidad más certificada del mundo con más de 1 millón de empresas certificadas.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Qué es el "tiempo de ciclo" en un almacén?',opts:['Tiempo total desde que se recibe un pedido hasta que sale expedido','El tiempo de un turno de trabajo','El tiempo de descarga de un camión','La duración del inventario anual'],ans:0,fact:'Reducir el tiempo de ciclo es el principal objetivo de la optimización logística en e-commerce.'},
+  {type:'mc',hook:'¿Cuál elegirías?', q:'¿Qué tipo de transporte tiene mayor capacidad pero menor velocidad?',opts:['Marítimo','Aéreo','Por carretera','Por ferrocarril'],ans:0,fact:'Un solo portacontenedores puede cargar el equivalente a 15.000 camiones. Por eso el 90% del comercio mundial va por mar.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué es el "etiquetado logístico" GS1-128?',opts:['Etiqueta estándar con código de barras para identificar unidades logísticas','La etiqueta de precio del producto','El sello del transportista','La etiqueta de peligrosidad ADR'],ans:0,fact:'La etiqueta GS1-128 puede incluir número de lote, fecha de caducidad, peso y destino en un solo código.'},
+  {type:'mc',hook:'¡Decide!', q:'¿Qué es el "mapa de calor" en un almacén?',opts:['Representación visual de las zonas con más actividad o movimiento','Un sistema de detección de incendios','El plano de las instalaciones eléctricas','El registro de temperaturas de la cámara frigorífica'],ans:0,fact:'Los mapas de calor ayudan a rediseñar la distribución del almacén para minimizar desplazamientos.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "picking por lotes"?',opts:['Recoger varios pedidos a la vez para optimizar el recorrido','Seleccionar productos por fecha de caducidad','Recoger solo artículos pesados','Hacer picking en lotes horarios fijos'],ans:0,fact:'El batch picking puede multiplicar por 3-5 la productividad respecto al picking pedido a pedido.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué tipo de riesgo es específico del trabajo en almacén?',opts:['Atropello por carretilla, caída de objetos en altura, sobreesfuerzo','Solo el estrés laboral','Exposición a pantallas','Riesgo eléctrico en oficinas'],ans:0,fact:'Los accidentes con carretillas elevadoras causan más de 25.000 lesiones graves al año solo en Europa.'},
+  {type:'mc',hook:'¡Dato curioso!', q:'¿Qué es la "tara" de un vehículo de transporte?',opts:['El peso del vehículo sin carga','El peso máximo que puede transportar','El peso de la carga más el vehículo','El peso de la documentación de transporte'],ans:0,fact:'Peso bruto = tara + carga útil (payload). Los camiones de 40 toneladas tienen una tara de unos 8-10 toneladas.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué significa "full truck load" (FTL)?',opts:['Carga completa de un camión para un solo cliente','Un tipo de seguro de transporte','El peso máximo legal de un camión','Un sistema de seguimiento GPS'],ans:0,fact:'Opuesto al LTL (Less than Truck Load), donde varios clientes comparten el espacio del camión.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Qué es la "ergonomía" en el puesto de trabajo de almacén?',opts:['Adaptación del trabajo a las capacidades del trabajador para prevenir lesiones','La decoración del almacén','El estudio de los tiempos de trabajo','La organización de los turnos'],ans:0,fact:'Las lesiones musculoesqueléticas por mala ergonomía son la primera causa de baja laboral en el sector logístico.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué es el "número de lote" en trazabilidad?',opts:['Código que identifica un conjunto de productos fabricados en las mismas condiciones','El número de palet en el almacén','El código del proveedor','El número de albarán de recepción'],ans:0,fact:'El número de lote permite retirar del mercado solo los productos afectados en caso de alerta alimentaria o sanitaria.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué es un "pick to light"?',opts:['Sistema de luces que indica al operario dónde recoger y cuántas unidades','Un tipo de iluminación de emergencia','Una app de localización de productos','El indicador luminoso de la carretilla'],ans:0,fact:'Los sistemas pick-to-light reducen los tiempos de formación de nuevos operarios hasta en un 70%.'},
+  {type:'mc',hook:'¡Dato que no esperabas!', q:'¿Qué es el "stock en tránsito"?',opts:['Mercancía que está siendo transportada y aún no ha llegado al almacén destino','El stock que está en la zona de expedición','El inventario en curso de producción','El stock de exposición en tienda'],ans:0,fact:'En grandes empresas el stock en tránsito puede representar varios días de ventas y suponer millones de euros inmovilizados.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué documento se genera al hacer un pedido a un proveedor?',opts:['Orden de compra (pedido)','Albarán de entrega','Factura de venta','Nota de cargo'],ans:0,fact:'La orden de compra es el contrato que compromete al proveedor a entregar la mercancía en las condiciones pactadas.'},
+  {type:'mc',hook:'¿Cuál elegirías?', q:'¿Qué sistema es más adecuado para almacenar artículos de alta rotación y acceso frecuente?',opts:['Estantería dinámica (flow rack) con rodillos','Almacén automático de palés de gran altura','Almacenamiento en bloque sin estanterías','Armario de seguridad bajo llave'],ans:0,fact:'Las estanterías dinámicas usan la gravedad para mover el producto y garantizan FIFO automáticamente.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Qué es la "unidad de carga" en logística?',opts:['Conjunto de artículos agrupados para facilitar su manejo como una sola unidad','Un solo artículo individual','El vehículo de transporte','La caja de embalaje primario'],ans:0,fact:'Definir bien la unidad de carga (palet, caja, contenedor) es la base de cualquier diseño logístico eficiente.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué es la "temperatura ambiente controlada" en almacenamiento?',opts:['Temperatura entre 15°C y 25°C mantenida de forma activa','La temperatura exterior del almacén','Una temperatura de -5°C','La temperatura de la zona de oficinas'],ans:0,fact:'Muchos productos farmacéuticos, cosméticos y electrónicos requieren almacenamiento en temperatura ambiente controlada.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "diagrama de Gantt" aplicado a un almacén?',opts:['Representación visual de tareas y tiempos para planificar operaciones','Un tipo de gráfico de ventas','El plano de distribución del almacén','El organigrama del personal'],ans:0,fact:'Los diagramas de Gantt se usan para planificar recepciones, inventarios y expediciones masivas en almacén.'},
+  {type:'mc',hook:'¡Decide como un jefe!', q:'¿Qué acción reduce más el riesgo de accidente con carretilla elevadora?',opts:['Señalizar y separar físicamente zonas de peatones y carretillas','Limitar la velocidad a 20 km/h','Usar carretillas de color llamativo','Colocar espejos en los pasillos'],ans:0,fact:'La separación física con barreras es 10 veces más eficaz que las señales horizontales para prevenir atropellos.'},
+  {type:'mc',hook:'¿Lo sabías?', q:'¿Qué es el "Incoterm DDP" en comercio internacional?',opts:['El vendedor asume todos los costes y riesgos hasta el destino final (Delivered Duty Paid)','El comprador paga todos los impuestos','El transporte es compartido al 50%','Solo aplica a transporte marítimo'],ans:0,fact:'DDP es el Incoterm que más responsabilidad pone sobre el vendedor. El opuesto es EXW (Ex Works).'},
+  {type:'mc',hook:'¡Dato curioso!', q:'¿Cuánto puede reducir el coste logístico una buena gestión de rutas de transporte?',opts:['Entre un 10% y un 30%','Solo un 2%','Hasta un 80%','No tiene impacto real'],ans:0,fact:'Los sistemas de optimización de rutas (TMS) son una de las inversiones con mayor ROI en logística.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "reaprovisionamiento automático"?',opts:['Sistema que lanza pedidos automáticamente cuando el stock baja del punto de pedido','Reponer estanterías manualmente cada día','Pedir siempre la misma cantidad cada semana','El abastecimiento por parte del proveedor sin pedido previo'],ans:0,fact:'Los sistemas de reaprovisionamiento automático pueden reducir las roturas de stock un 40-60%.'},
+  {type:'mc',hook:'¿Cuál crees?', q:'¿Qué es el "control de calidad en recepción"?',opts:['Verificar que la mercancía recibida cumple especificaciones antes de aceptarla','Revisar la factura del proveedor','Contar el número de bultos','Comprobar el precio pactado'],ans:0,fact:'Un control de calidad en recepción riguroso puede detectar hasta el 95% de los defectos antes de que lleguen al cliente.'},
+  {type:'mc',hook:'¡Ponlo a prueba!', q:'¿Qué significa "consolidación de cargas"?',opts:['Agrupar envíos de varios clientes en un mismo vehículo para reducir costes','Asegurar la carga para evitar movimientos','Paletizar la mercancía antes de expedir','Sellar los embalajes con flejes'],ans:0,fact:'La consolidación puede reducir el coste de transporte hasta un 70% comparado con envíos individuales.'},
+  {type:'mc',hook:'¿Sabías que...', q:'¿Qué es el "plan de emergencia" obligatorio en almacenes?',opts:['Protocolo de actuación ante incendios, accidentes o emergencias graves','El plan de vacaciones del personal','El protocolo de atención al cliente','El manual de calidad del almacén'],ans:0,fact:'Los almacenes con más de 50 trabajadores están obligados por ley a tener un plan de autoprotección aprobado.'},
+  {type:'mc',hook:'¿Cuál crees que...', q:'¿Qué es el "RFID" en logística?',opts:['Tecnología de identificación por radiofrecuencia que lee etiquetas sin contacto','Un tipo de código de barras de nueva generación','Un sistema de GPS para camiones','Un protocolo de comunicación wifi'],ans:0,fact:'Un lector RFID puede identificar miles de artículos por segundo sin necesidad de línea de visión directa.'},
+  {type:'mc',hook:'¡Dato que no esperabas!', q:'¿Cuánto puede costar un error de picking por pedido en e-commerce?',opts:['Entre 15€ y 50€ incluyendo devolución, reenvío y gestión','Solo el coste del producto','Menos de 2€ de media','Más de 500€ siempre'],ans:0,fact:'Por eso la precisión en picking es tan crítica: un 1% de errores en un almacén de 10.000 pedidos/día = 100 problemas diarios.'},
 ];
 
-var MOTS=[[0,'¡Empieza tu racha hoy!'],[1,'¡Primera correcta! Sigue así 💪'],[2,'¡Racha de 2! Calentando motores...'],[3,'¡3 seguidas! Ya te lo estás currando 🔥'],[5,'¡5 seguidas! Huele a profesional 💥'],[7,'¡Imparable! 7 sin fallar 🌟'],[10,'¡10 SEGUIDAS! Eres un crack 🏆'],[15,'¡15! Podrías dar tú la clase 👑'],[20,'¡20 SIN FALLO! Leyenda del almacén 🥇'],[999,'¡Racha brutal! Nadie llega tan lejos 🚀']];
-var PRIZES=[{e:'📦',t:'¡Artículo bien ubicado!'},{e:'🏷️',t:'¡SKU verificado!'},{e:'✅',t:'¡Picking sin errores!'},{e:'🚛',t:'¡Expedición aprobada!'},{e:'🔥',t:'¡Racha en marcha!'},{e:'🌟',t:'¡Top operario!'},{e:'🏆',t:'¡Profesional en formación!'},{e:'💥',t:'¡Correcto!'}];
-var EMOJIS=['📦','🏭','🚛','📋','🔍','🏷️','🪣','📊','⚙️','🔧','📬','🗂️'];
+const FIRES = ['⚡','🔥','🔥','💥','🌟','🏆','👑'];
+const MOTS = [
+  [0,'¡Empieza tu racha hoy!'],
+  [1,'¡Primera correcta! Sigue así 💪'],
+  [2,'¡Racha de 2! Calentando motores...'],
+  [3,'¡3 seguidas! Ya te lo estás currando 🔥'],
+  [5,'¡Racha de 5! Esto ya huele a profesional 💥'],
+  [7,'¡Imparable! 7 sin fallar... ¿hasta cuándo? 🌟'],
+  [10,'¡10 SEGUIDAS! Eres un crack del almacén 🏆'],
+  [15,'¡15! Podrías dar tú la clase... 👑'],
+  [20,'¡20 CORRECTAS SIN FALLO! Leyenda del almacén 🥇'],
+  [999,'¡Racha brutal! No te conoce nadie que llegue tan lejos 🚀'],
+];
 
-function gToday(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
-function gDay(){return Math.floor((new Date()-new Date(2024,8,1))/86400000);}
+const PRIZES = [
+  {e:'📦',t:'¡Artículo correctamente ubicado!',d:'Tu respuesta llegó al sitio exacto. Como un buen operario de almacén.'},
+  {e:'🏷️',t:'¡SKU verificado!',d:'Identificaste correctamente. El sistema te da el visto bueno.'},
+  {e:'✅',t:'¡Pedido sin errores!',d:'Cero fallos en el picking. El cliente está satisfecho.'},
+  {e:'🚛',t:'¡Expedición aprobada!',d:'La mercancía sale limpia y bien documentada.'},
+  {e:'🔥',t:'¡Racha en marcha!',d:'Sigues sumando. No dejes que se enfríe.'},
+  {e:'🌟',t:'¡Top operario!',d:'Respuesta impecable. Así se trabaja en un almacén de élite.'},
+  {e:'🏆',t:'¡Profesional en formación!',d:'Cada acierto te acerca más al mundo real del almacén.'},
+  {e:'💥',t:'¡Correcto!',d:'Sin dudar. Eso es criterio profesional.'},
+];
 
-var streak=0,best=0,atd=false;
-try{streak=parseInt(localStorage.getItem('alm_s')||'0');best=parseInt(localStorage.getItem('alm_b')||'0');atd=localStorage.getItem('alm_atd')===gToday();}catch(e){}
-function save(){try{localStorage.setItem('alm_s',streak);localStorage.setItem('alm_b',best);localStorage.setItem('alm_atd',gToday());}catch(e){}}
+const EMOJIS = ['📦','🏭','🚛','📋','🔍','🏷️','🪣','📊','⚙️','🔧','📬','🗂️','🔑','📌'];
 
-function getMot(n){var m=MOTS[0][1];for(var i=0;i<MOTS.length;i++){if(n>=MOTS[i][0])m=MOTS[i][1];}return m;}
-function getFire(n){if(n===0)return'⚡';if(n<3)return'🔥';if(n<7)return'💥';if(n<10)return'🌟';if(n<15)return'🏆';return'👑';}
+function getToday(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+function getDayIndex(){ const s=new Date(2024,8,1); const n=new Date(); return Math.floor((n-s)/(86400000)); }
 
-function updUI(){
-  var rn=document.getElementById('rn');
-  rn.textContent=streak;rn.className='rn bump';
-  setTimeout(function(){rn.className='rn';},400);
-  document.getElementById('rf').textContent=getFire(streak);
-  document.getElementById('rm').textContent=getMot(streak);
-  document.getElementById('rb').textContent=best>0?'Récord: '+best:'';
+let streak = 0, best = 0, lastDate = '', answeredToday = false;
+try {
+  streak = parseInt(localStorage.getItem('alm_streak')||'0');
+  best = parseInt(localStorage.getItem('alm_best')||'0');
+  lastDate = localStorage.getItem('alm_lastdate')||'';
+  answeredToday = localStorage.getItem('alm_answered_today') === getToday();
+} catch(e){}
+
+function saveStreak(){
+  try {
+    localStorage.setItem('alm_streak', streak);
+    localStorage.setItem('alm_best', best);
+    localStorage.setItem('alm_lastdate', lastDate);
+    localStorage.setItem('alm_answered_today', getToday());
+  } catch(e){}
 }
 
-var cQ=null,selId=null,selTxt=null,slots=[];
-
-function render(){
-  cQ=QS[gDay()%QS.length];
-  var el=document.getElementById('qb');
-  if(cQ.t==='mc')renderMC(el,cQ);else renderDrag(el,cQ);
+function getMot(n){
+  let msg = MOTS[0][1];
+  for(const [th,m] of MOTS){ if(n>=th) msg=m; }
+  return msg;
+}
+function getFire(n){
+  if(n===0) return '⚡';
+  if(n<3) return '🔥';
+  if(n<7) return '💥';
+  if(n<10) return '🌟';
+  if(n<15) return '🏆';
+  return '👑';
 }
 
-function renderMC(el,q){
-  var dis=atd?'disabled':'';
-  var h='<div class="qhook">'+q.h+'</div><div class="qtxt">'+q.q+'</div><div class="qopts">';
-  for(var i=0;i<q.o.length;i++)h+='<button class="qopt" '+dis+' onclick="answerMC('+i+')">'+String.fromCharCode(65+i)+') '+q.o[i]+'</button>';
-  h+='</div><div class="qfact" id="qf" style="display:'+(atd?'block':'none')+'">💡 '+q.f+'</div>';
-  h+='<button class="qnext" id="qn" style="display:'+(atd?'inline-block':'none')+'" onclick="nextQ()">Siguiente →</button>';
-  el.innerHTML=h;
+function updateRachaUI(){
+  const rn = document.getElementById('rachaNum');
+  rn.textContent = streak;
+  rn.classList.remove('bump'); void rn.offsetWidth; rn.classList.add('bump');
+  document.getElementById('rachaFire').textContent = getFire(streak);
+  document.getElementById('rachaMot').textContent = getMot(streak);
+  document.getElementById('rachaSub').textContent = lastDate ? 'Última: '+lastDate : '';
+  document.getElementById('rachaBest').textContent = best>0 ? '🏅 Récord: '+best : '';
+}
+
+let currentQ = null, dragSelected = null, slotState = [];
+
+function getQuestion(){
+  const idx = getDayIndex() % QS.length;
+  return QS[idx];
+}
+
+function renderQuestion(){
+  const q = getQuestion();
+  currentQ = q;
+  const el = document.getElementById('qBlock');
+  if(q.type === 'mc') renderMC(el, q);
+  else if(q.type === 'drag') renderDrag(el, q);
+}
+
+function renderMC(el, q){
+  const disabled = answeredToday ? 'disabled' : '';
+  el.innerHTML = `
+    <div class="qhook">${q.hook}</div>
+    <div class="qtxt">${q.q}</div>
+    <div class="qopts" id="opts">
+      ${q.opts.map((o,i)=>`<button class="qopt" ${disabled} onclick="answerMC(${i})">${String.fromCharCode(65+i)}) ${o}</button>`).join('')}
+    </div>
+    <div class="qfact" id="qfact">💡 ${q.fact}</div>
+    <button class="qnext" id="qnext" onclick="nextQ()">Siguiente pregunta →</button>
+  `;
+  if(answeredToday){
+    document.getElementById('qfact').style.display='block';
+    document.getElementById('qnext').style.display='block';
+  }
 }
 
 function answerMC(i){
-  if(atd)return;atd=true;
-  var q=cQ,btns=document.querySelectorAll('.qopt');
-  for(var b=0;b<btns.length;b++)btns[b].disabled=true;
-  if(i===q.a){
-    btns[i].className='qopt correct';
-    streak++;if(streak>best)best=streak;save();updUI();
-    var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=q.f;
-    setTimeout(function(){showP(true,f,pr);},350);
-  }else{
-    btns[i].className='qopt wrong';btns[q.a].className='qopt correct';
-    var old=streak,f=q.f;streak=0;save();updUI();
-    setTimeout(function(){showP(false,f,null,old);},350);
+  if(answeredToday) return;
+  answeredToday = true;
+  const q = currentQ;
+  const btns = document.querySelectorAll('.qopt');
+  btns.forEach(b=>b.disabled=true);
+  if(i===q.ans){
+    btns[i].classList.add('correct');
+    streak++; if(streak>best) best=streak;
+    lastDate = getToday();
+    saveStreak();
+    updateRachaUI();
+    setTimeout(()=>showPrize(true, q.fact),350);
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    const old = streak; streak=0; saveStreak(); updateRachaUI();
+    if(old>0) setTimeout(()=>showPrize(false, q.fact, old),350);
+    else { document.getElementById('qfact').style.display='block'; document.getElementById('qnext').style.display='block'; }
   }
-  document.getElementById('qf').style.display='block';
-  document.getElementById('qn').style.display='inline-block';
+  document.getElementById('qfact').style.display='block';
+  document.getElementById('qnext').style.display='block';
 }
 
-function renderDrag(el,q){
-  slots=new Array(q.i.length).fill(null);
-  var sh=[];for(var i=0;i<q.i.length;i++)sh.push({item:q.i[i],i:i});
-  sh.sort(function(){return Math.random()-0.5;});
-  var h='<div class="qhook">'+q.h+'</div><div class="qtxt">'+q.q+'</div><div class="dchips">';
-  for(var c=0;c<sh.length;c++){
-    var lbl=sh[c].item.length>20?sh[c].item.substring(0,18)+'…':sh[c].item;
-    h+='<div class="dchip" id="chip_'+sh[c].i+'" onclick="selChip('+sh[c].i+',this)">'+lbl+'</div>';
-  }
-  h+='</div><div class="dslots">';
-  for(var s=0;s<q.i.length;s++)h+='<div class="dslot" id="slot_'+s+'" onclick="placeChip('+s+')"><span class="slot-lbl">'+(s+1)+'.</span><span id="stxt_'+s+'" style="flex:1;color:rgba(255,255,255,.4);font-size:10px">Toca aquí</span></div>';
-  h+='</div><button class="qbtn" id="qbtn" onclick="checkDrag()">Comprobar</button>';
-  h+='<div class="qfact" id="qf" style="display:none">💡 '+q.f+'</div>';
-  h+='<button class="qnext" id="qn" style="display:none" onclick="nextQ()">Siguiente →</button>';
-  el.innerHTML=h;
-  // store chip texts for selChip
-  for(var c=0;c<sh.length;c++){
-    (function(ci,txt){
-      var chip=document.getElementById('chip_'+ci);
-      if(chip)chip.setAttribute('data-txt',txt);
-    })(sh[c].i,sh[c].item);
-  }
-  if(atd){document.getElementById('qbtn').style.display='none';document.getElementById('qf').style.display='block';document.getElementById('qn').style.display='inline-block';}
+function renderDrag(el, q){
+  const shuffled = [...q.items].map((item,i)=>({item,i})).sort(()=>Math.random()-0.5);
+  slotState = new Array(q.items.length).fill(null);
+  el.innerHTML = `
+    <div class="qhook">${q.hook}</div>
+    <div class="qtxt">${q.q}</div>
+    <div class="drag-chips" id="dchips">
+      ${shuffled.map((s,ci)=>`<div class="dchip" id="chip_${s.i}" onclick="selectChip(${s.i},'${s.item.replace(/'/g,"\\'")}',this)">${s.item}</div>`).join('')}
+    </div>
+    <div class="dslots" id="dslots">
+      ${q.items.map((_,si)=>`<div class="dslot" id="slot_${si}" onclick="placeChip(${si})"><span class="slot-lbl">${si+1}.</span><span id="slot_txt_${si}" style="flex:1;font-size:11px;color:rgba(255,255,255,0.5)">Toca aquí</span></div>`).join('')}
+    </div>
+    <button class="qbtn" id="qbtn" onclick="checkDrag()">Comprobar</button>
+    <div class="qfact" id="qfact" style="display:none">💡 ${q.fact}</div>
+    <button class="qnext" id="qnext" style="display:none" onclick="nextQ()">Siguiente →</button>
+  `;
+  if(answeredToday){ document.getElementById('qbtn').style.display='none'; document.getElementById('qfact').style.display='block'; document.getElementById('qnext').style.display='block'; }
 }
 
-function selChip(id,el){
-  document.querySelectorAll('.dchip').forEach(function(c){c.classList.remove('selected');});
-  if(!el||el.classList.contains('used'))return;
-  el.classList.add('selected');selId=id;selTxt=el.getAttribute('data-txt');
+let selectedChipId = null, selectedChipTxt = null;
+function selectChip(id, txt, el){
+  if(el.classList.contains('used')) return;
+  document.querySelectorAll('.dchip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedChipId = id; selectedChipTxt = txt;
 }
-
 function placeChip(si){
-  if(selId===null)return;
-  var prev=slots[si];slots[si]={id:selId,txt:selTxt};
-  var ch=document.getElementById('chip_'+selId);
-  if(ch){ch.classList.add('used');ch.classList.remove('selected');}
-  if(prev!==null){var pc=document.getElementById('chip_'+prev.id);if(pc)pc.classList.remove('used');}
-  var st=document.getElementById('stxt_'+si);
-  if(st){st.textContent=selTxt;st.style.color='#fff';}
-  var slEl=document.getElementById('slot_'+si);
-  if(slEl)slEl.classList.add('filled');
-  selId=null;selTxt=null;
+  if(selectedChipId===null) return;
+  const prev = slotState[si];
+  slotState[si] = {id:selectedChipId, txt:selectedChipTxt};
+  const chip = document.getElementById('chip_'+selectedChipId);
+  if(chip){ chip.classList.add('used'); chip.classList.remove('selected'); }
+  if(prev!==null){ const pc=document.getElementById('chip_'+prev.id); if(pc){pc.classList.remove('used');} }
+  const sl = document.getElementById('slot_txt_'+si);
+  if(sl){ sl.textContent=selectedChipTxt; sl.style.color='white'; }
+  const slotEl = document.getElementById('slot_'+si);
+  if(slotEl) slotEl.classList.add('filled');
+  selectedChipId=null; selectedChipTxt=null;
 }
-
 function checkDrag(){
-  if(atd)return;
-  var q=cQ,ok=true;
-  for(var si=0;si<q.o.length;si++){
-    var p=slots[si],slEl=document.getElementById('slot_'+si);
-    if(!p||p.id!==q.o[si]){ok=false;if(slEl)slEl.classList.add('wrong-s');}
-    else if(slEl)slEl.classList.add('correct-s');
-  }
-  atd=true;
+  if(answeredToday) return;
+  const q = currentQ;
+  let correct = true;
+  q.order.forEach((correctChipIdx, si)=>{
+    const placed = slotState[si];
+    const slotEl = document.getElementById('slot_'+si);
+    if(!placed || placed.id !== correctChipIdx){ correct=false; if(slotEl) slotEl.classList.add('wrong-s'); }
+    else { if(slotEl) slotEl.classList.add('correct-s'); }
+  });
+  answeredToday=true;
   document.getElementById('qbtn').style.display='none';
-  document.getElementById('qf').style.display='block';
-  document.getElementById('qn').style.display='inline-block';
-  if(ok){streak++;if(streak>best)best=streak;save();updUI();var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=cQ.f;setTimeout(function(){showP(true,f,pr);},400);}
-  else{var old=streak,f=cQ.f;streak=0;save();updUI();setTimeout(function(){showP(false,f,null,old);},400);}
+  document.getElementById('qfact').style.display='block';
+  document.getElementById('qnext').style.display='block';
+  if(correct){
+    streak++; if(streak>best) best=streak;
+    lastDate=getToday(); saveStreak(); updateRachaUI();
+    setTimeout(()=>showPrize(true, q.fact),400);
+  } else {
+    const old=streak; streak=0; saveStreak(); updateRachaUI();
+    if(old>0) setTimeout(()=>showPrize(false,q.fact,old),400);
+  }
 }
 
 function nextQ(){
-  atd=false;var idx;
-  do{idx=Math.floor(Math.random()*QS.length);}while(QS[idx]===cQ&&QS.length>1);
-  cQ=QS[idx];var el=document.getElementById('qb');
-  if(cQ.t==='mc')renderMC(el,cQ);else renderDrag(el,cQ);
+  answeredToday = false;
+  const qs = [...QS];
+  let idx;
+  do { idx = Math.floor(Math.random()*qs.length); } while(qs[idx]===currentQ && qs.length>1);
+  currentQ = qs[idx];
+  const el = document.getElementById('qBlock');
+  if(currentQ.type==='mc') renderMC(el,currentQ);
+  else renderDrag(el,currentQ);
 }
 
-function showP(win,fact,pr,lost){
-  if(win&&pr){document.getElementById('pe').textContent=pr.e;document.getElementById('pt').textContent=pr.t;}
-  else{document.getElementById('pe').textContent='💔';document.getElementById('pt').textContent=lost>0?'¡Racha de '+lost+' perdida!':'¡Casi!';}
-  document.getElementById('pd').textContent='💡 '+fact;
-  document.getElementById('ov').classList.add('show');
-  if(win)confetti();
+function showPrize(win, fact, lostStreak){
+  const p = PRIZES[Math.floor(Math.random()*PRIZES.length)];
+  const overlay = document.getElementById('prizeOverlay');
+  if(win){
+    document.getElementById('prizeE').textContent = p.e;
+    document.getElementById('prizeT').textContent = p.t;
+    document.getElementById('prizeD').textContent = '💡 '+fact;
+  } else {
+    document.getElementById('prizeE').textContent = '💔';
+    document.getElementById('prizeT').textContent = lostStreak>0 ? '¡Racha de '+lostStreak+' perdida!' : '¡Casi!';
+    document.getElementById('prizeD').textContent = 'Respuesta incorrecta. Racha reiniciada a 0. 💡 '+fact;
+  }
+  overlay.classList.add('show');
+  if(win) spawnConfetti();
 }
-function closeP(){document.getElementById('ov').classList.remove('show');}
+function closePrize(){ document.getElementById('prizeOverlay').classList.remove('show'); }
 
-function confetti(){
-  var box=document.getElementById('pbox'),cols=['#C4F135','#F06B6B','#fff','#1a1a1a','#FFD700'];
-  for(var i=0;i<16;i++){
-    var c=document.createElement('div');c.className='cf';
-    c.style.cssText='left:'+(10+Math.random()*80)+'%;top:'+(Math.random()*5)+'px;width:'+(5+Math.random()*5)+'px;height:'+(5+Math.random()*5)+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-delay:'+(Math.random()*.4)+'s;animation-duration:'+(1+Math.random()*.7)+'s;';
-    box.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},2200);
+function spawnConfetti(){
+  const box = document.getElementById('prizeBox');
+  const colors=['#C4F135','#F06B6B','#fff','#1a1a1a','#FFD700'];
+  for(let i=0;i<18;i++){
+    const c=document.createElement('div');
+    c.className='cf';
+    c.style.cssText=`left:${10+Math.random()*80}%;top:${-5+Math.random()*20}px;width:${6+Math.random()*6}px;height:${6+Math.random()*6}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*0.4}s;animation-duration:${1+Math.random()*0.8}s;`;
+    box.appendChild(c);
+    setTimeout(()=>c.remove(),2500);
   }
 }
 
-var layer=document.getElementById('el');
+const layer = document.getElementById('emojiLayer');
 function spawnEmoji(){
-  var e=document.createElement('span');e.className='ei';
-  e.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-  e.style.cssText='left:'+(Math.random()*94)+'%;font-size:'+(16+Math.random()*14)+'px;animation-duration:'+(8+Math.random()*8)+'s;';
-  layer.appendChild(e);
-  setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);},(8+Math.random()*8)*1000);
+  const el=document.createElement('div'); el.className='ei';
+  el.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+  el.style.left=Math.random()*95+'%';
+  el.style.fontSize=(18+Math.random()*16)+'px';
+  const dur=8+Math.random()*8; el.style.animationDuration=dur+'s';
+  layer.appendChild(el); setTimeout(()=>el.remove(),dur*1000);
 }
-for(var i=0;i<5;i++)setTimeout(spawnEmoji,i*900);
-setInterval(spawnEmoji,1300);
+for(let i=0;i<6;i++) setTimeout(spawnEmoji,i*1000);
+setInterval(spawnEmoji,1200);
 
-updUI();render();
+updateRachaUI();
+renderQuestion();
 </script>
-</body>
-</html>
