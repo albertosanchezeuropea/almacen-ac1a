@@ -166,8 +166,8 @@ Incrustar en la descripción de sección:
 ```html
 <p><iframe style="border-radius: 14px; display: block;"
     src="https://albertosanchezedu.github.io/banner-racha-tecnicas-almacen/banner_almacen.html"
-    width="100%" height="420" frameborder="0" scrolling="no">
-  </iframe></p>
+    width="100%" height="520" frameborder="0" scrolling="no">
+</iframe></p>
 ```
 
 ### Configuración del cuestionario de canje en Moodle
