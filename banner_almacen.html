@@ -130,6 +130,7 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 .mg-result-prize{font-size:12px;color:#C4F135;font-weight:700;}
 .mg-btn{background:#C4F135;color:#1a1a1a;border:none;border-radius:8px;padding:8px 20px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:12px;cursor:pointer;width:100%;}
 @keyframes lvlflash{0%{transform:scale(1);}30%{transform:scale(1.15);}60%{transform:scale(0.95);}100%{transform:scale(1);}}
+@keyframes xplose{0%{background:rgba(255,80,80,.4);}100%{background:rgba(0,0,0,.2);}}
 </style>
 </head>
 <body>
@@ -359,7 +360,8 @@ function addXP(amount){
 }
 function subtractXP(amount){
   xp=Math.max(0,xp-amount);
-  save();
+  var badge=document.getElementById('lvlBadge');
+  if(badge){badge.style.animation='none';void badge.offsetWidth;badge.style.animation='xplose .6s ease forwards';}
 }
 
 function getMot(n){var m=MOTS[0][1];for(var i=0;i<MOTS.length;i++){if(n>=MOTS[i][0])m=MOTS[i][1];}return m;}
