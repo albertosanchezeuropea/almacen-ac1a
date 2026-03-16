@@ -29,12 +29,23 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 .lvl-arr{font-size:9px;color:rgba(255,255,255,.5);}
 
 /* SHIELD BADGE */
-.shield-badge{display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.2);border-radius:6px;padding:3px 8px;}
+.shield-badge{display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.2);border-radius:6px;padding:3px 8px;cursor:pointer;transition:background .15s;position:relative;}
+.shield-badge:hover{background:rgba(0,0,0,.32);}
 .shield-badge.has-shield{background:rgba(196,241,53,.2);border:1px solid rgba(196,241,53,.4);}
 .shield-txt{font-size:9px;font-weight:700;color:rgba(255,255,255,.7);}
 .shield-badge.has-shield .shield-txt{color:#C4F135;}
 
-/* PANEL DROPDOWN BAJO EL BADGE */
+/* PANEL ESCUDOS */
+.shield-panel{display:none;position:absolute;top:calc(100% + 6px);right:0;width:200px;background:#1e1e1e;border-radius:10px;padding:14px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+.shield-panel.open{display:block;}
+.sp-title{font-size:11px;font-weight:700;color:#C4F135;margin-bottom:8px;}
+.sp-count{font-size:28px;font-weight:900;color:#C4F135;text-align:center;margin:6px 0 2px;}
+.sp-label{font-size:9px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:10px;}
+.sp-div{height:1px;background:rgba(255,255,255,.08);margin:8px 0;}
+.sp-rule{font-size:9px;color:rgba(255,255,255,.4);line-height:1.5;}
+.sp-close{display:block;width:100%;background:rgba(255,255,255,.08);border:none;border-radius:6px;padding:5px;font-family:'Fira Sans',sans-serif;font-size:10px;color:#fff;cursor:pointer;margin-top:8px;}
+
+/* PANEL NIVELES */
 .lvl-panel{display:none;position:absolute;top:calc(100% + 6px);right:0;width:220px;background:#1e1e1e;border-radius:10px;padding:14px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.5);}
 .lvl-panel.open{display:block;}
 .lp-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
@@ -45,18 +56,15 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 .lp-close{background:rgba(255,255,255,.1);border:none;border-radius:50%;width:20px;height:20px;color:#fff;font-size:11px;cursor:pointer;font-family:'Fira Sans',sans-serif;margin-left:auto;flex-shrink:0;}
 .lp-barwrap{background:rgba(255,255,255,.1);border-radius:99px;height:6px;overflow:hidden;margin-bottom:4px;}
 .lp-bar{height:100%;background:#C4F135;border-radius:99px;transition:width .5s ease;}
-.lp-bartxt{font-size:9px;color:rgba(255,255,255,.4);text-align:right;margin-bottom:10px;}
-.lp-div{height:1px;background:rgba(255,255,255,.08);margin:8px 0;}
-.lp-shield-row{display:flex;align-items:center;gap:6px;}
-.lp-shield-ico{font-size:16px;}
-.lp-shield-txt{font-size:11px;font-weight:700;color:#C4F135;}
-.lp-shield-sub{font-size:9px;color:rgba(255,255,255,.4);margin-top:1px;}
+.lp-bartxt{font-size:9px;color:rgba(255,255,255,.4);text-align:right;margin-bottom:8px;}
+.lp-div{height:1px;background:rgba(255,255,255,.08);margin:6px 0;}
 .lp-ligas-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
 .lp-liga-row{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:10px;color:rgba(255,255,255,.45);}
 .lp-liga-row.cur{color:#C4F135;font-weight:700;}
 .lp-liga-row.done{color:rgba(255,255,255,.3);}
 .lp-liga-ico{font-size:13px;width:16px;text-align:center;flex-shrink:0;}
 .lp-liga-st{margin-left:auto;font-size:10px;}
+.lp-canje-btn{width:100%;background:#C4F135;color:#1a1a1a;border:none;border-radius:7px;padding:7px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-top:8px;}
 
 /* TITULOS */
 .btitle{font-family:'Fira Sans',sans-serif;font-weight:900;font-size:36px;color:#fff;line-height:1.05;margin-bottom:3px;}
@@ -66,12 +74,14 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 .two-col{display:flex;gap:10px;align-items:stretch;}
 .racha-block{background:rgba(0,0,0,.18);border-radius:10px;padding:14px 10px;width:128px;min-width:128px;text-align:center;flex-shrink:0;}
 .rl{font-size:9px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
-.rn{font-family:'Fira Sans',sans-serif;font-weight:900;font-size:50px;color:#C4F135;line-height:1;}
+.rn{font-family:'Fira Sans',sans-serif;font-weight:900;font-size:46px;color:#C4F135;line-height:1;}
 .rn.bump{animation:bump .35s ease;}
 @keyframes bump{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
-.rf{font-size:18px;margin:3px 0 2px;}
-.rm{font-size:10px;color:rgba(255,255,255,.8);font-style:italic;line-height:1.3;margin-top:4px;}
-.rb{font-size:9px;color:rgba(196,241,53,.75);margin-top:4px;}
+.rf{font-size:16px;margin:2px 0 1px;}
+.rm{font-size:9px;color:rgba(255,255,255,.8);font-style:italic;line-height:1.3;margin-top:3px;}
+.rb{font-size:9px;color:rgba(196,241,53,.75);margin-top:2px;}
+.rmult{font-family:'Fira Sans',sans-serif;font-weight:900;font-size:13px;color:#C4F135;margin-top:4px;letter-spacing:.02em;}
+.rmult.active{color:#FFD700;}
 .q-block{background:rgba(0,0,0,.16);border-radius:10px;padding:13px;flex:1;min-width:0;display:flex;flex-direction:column;}
 .qhook{font-size:9px;font-weight:700;color:#C4F135;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
 .qtxt{font-size:12px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:8px;}
@@ -108,6 +118,15 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 .cf{position:absolute;border-radius:2px;animation:cfall 1.3s ease-in forwards;}
 @keyframes cfall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(160px) rotate(400deg);opacity:0;}}
 
+/* BONUS BIENVENIDA */
+.bonus-ov{display:none;position:absolute;inset:0;background:rgba(0,0,0,.7);z-index:35;align-items:center;justify-content:center;border-radius:14px;}
+.bonus-ov.show{display:flex;}
+.bonus-box{background:#1a1a1a;border-radius:14px;padding:22px;text-align:center;max-width:260px;width:90%;font-family:'Fira Sans',sans-serif;}
+.bonus-icon{font-size:40px;margin-bottom:8px;}
+.bonus-title{font-weight:900;font-size:16px;color:#C4F135;margin-bottom:6px;}
+.bonus-txt{font-size:11px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:14px;}
+.bonus-btn{width:100%;background:#C4F135;color:#1a1a1a;border:none;border-radius:8px;padding:9px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:12px;cursor:pointer;}
+
 /* MINI-JUEGO */
 .mgov{display:none;position:absolute;inset:0;background:rgba(0,0,0,.75);z-index:40;align-items:center;justify-content:center;border-radius:14px;}
 .mgov.show{display:flex;}
@@ -129,6 +148,33 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 .mg-result-title{font-size:15px;font-weight:900;color:#fff;margin-bottom:4px;}
 .mg-result-prize{font-size:12px;color:#C4F135;font-weight:700;}
 .mg-btn{background:#C4F135;color:#1a1a1a;border:none;border-radius:8px;padding:8px 20px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:12px;cursor:pointer;width:100%;}
+
+/* CANJEADOR */
+.canje-overlay{display:none;position:absolute;inset:0;background:rgba(0,0,0,.85);z-index:60;border-radius:14px;align-items:center;justify-content:center;}
+.canje-overlay.open{display:flex;}
+.canje-box{background:#1e1e1e;border-radius:12px;padding:16px;width:88%;max-width:270px;font-family:'Fira Sans',sans-serif;}
+.canje-title{font-size:12px;font-weight:700;color:#C4F135;margin-bottom:3px;}
+.canje-sub{font-size:9px;color:rgba(255,255,255,.5);margin-bottom:10px;line-height:1.4;}
+.canje-screen{display:none;}
+.canje-screen.active{display:block;}
+.canje-opt-btn{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:8px 10px;font-family:'Fira Sans',sans-serif;font-size:10px;color:#fff;cursor:pointer;text-align:left;margin-bottom:5px;transition:background .15s;}
+.canje-opt-btn:hover{background:rgba(255,255,255,.16);}
+.canje-prev{background:rgba(196,241,53,.08);border:1px solid rgba(196,241,53,.2);border-radius:7px;padding:7px 10px;margin-bottom:8px;font-size:9px;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.canje-prev-code{font-weight:700;color:#C4F135;font-size:10px;letter-spacing:.04em;}
+.canje-prev-copy{background:#C4F135;color:#1a1a1a;border:none;border-radius:4px;padding:2px 7px;font-size:9px;font-weight:700;cursor:pointer;font-family:'Fira Sans',sans-serif;flex-shrink:0;}
+.canje-input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:7px;padding:7px 9px;font-family:'Fira Sans',sans-serif;font-size:11px;color:#fff;margin-bottom:7px;outline:none;-webkit-user-select:text;user-select:text;}
+.canje-input::placeholder{color:rgba(255,255,255,.3);}
+.canje-confirm-btn{width:100%;background:#C4F135;color:#1a1a1a;border:none;border-radius:7px;padding:7px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:11px;cursor:pointer;margin-bottom:5px;}
+.canje-back-btn{width:100%;background:transparent;border:none;color:rgba(255,255,255,.3);font-family:'Fira Sans',sans-serif;font-size:9px;cursor:pointer;padding:3px;}
+.canje-code-box{background:rgba(196,241,53,.1);border:1px solid rgba(196,241,53,.4);border-radius:8px;padding:10px;text-align:center;margin-bottom:8px;}
+.canje-code{font-family:'Fira Sans',sans-serif;font-weight:700;font-size:14px;color:#C4F135;letter-spacing:.08em;word-break:break-all;-webkit-user-select:text;user-select:text;}
+.canje-code-hint{font-size:8px;color:rgba(255,255,255,.4);margin-top:3px;}
+.canje-copy-btn{width:100%;background:rgba(196,241,53,.2);border:1px solid rgba(196,241,53,.4);border-radius:7px;padding:6px;font-family:'Fira Sans',sans-serif;font-weight:700;font-size:10px;color:#C4F135;cursor:pointer;margin-bottom:5px;}
+.canje-warn{font-size:9px;color:#ff9966;background:rgba(255,100,50,.1);border-radius:6px;padding:6px 8px;margin-bottom:7px;line-height:1.4;}
+.canje-err{font-size:9px;color:#ff8080;margin-bottom:5px;display:none;}
+.canje-resumen{font-size:10px;color:rgba(196,241,53,.85);margin-bottom:8px;line-height:1.4;}
+.canje-close-btn{width:100%;background:rgba(255,255,255,.08);border:none;border-radius:7px;padding:6px;font-family:'Fira Sans',sans-serif;font-size:10px;color:#fff;cursor:pointer;}
+
 @keyframes lvlflash{0%{transform:scale(1);}30%{transform:scale(1.15);}60%{transform:scale(0.95);}100%{transform:scale(1);}}
 @keyframes xplose{0%{background:rgba(255,80,80,.4);}100%{background:rgba(0,0,0,.2);}}
 </style>
@@ -146,11 +192,18 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
         <span class="lvl-xp" id="lvlXp">0 XP</span>
         <span class="lvl-arr">▸</span>
       </div>
-      <div class="shield-badge" id="shieldBadge">
+      <div class="shield-badge" id="shieldBadge" onclick="toggleShieldPanel(event)">
         <span>🛡️</span>
         <span class="shield-txt" id="shieldTxt">x0</span>
+        <div class="shield-panel" id="shieldPanel">
+          <div class="sp-title">🛡️ Protectores de racha</div>
+          <div class="sp-count" id="spCount">0</div>
+          <div class="sp-label">protectores disponibles</div>
+          <div class="sp-div"></div>
+          <div class="sp-rule">• Absorben un fallo sin romper tu racha<br>• Ganas 1 cada 10 aciertos seguidos<br>• También puedes ganarlos en los bonus de emojis</div>
+          <button class="sp-close" onclick="closeShieldPanel(event)">Cerrar</button>
+        </div>
       </div>
-      <!-- PANEL DROPDOWN -->
       <div class="lvl-panel" id="lvlPanel">
         <div class="lp-head">
           <div class="lp-icon" id="lpIcon">📦</div>
@@ -161,18 +214,12 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
           <button class="lp-close" onclick="closePanel(event)">✕</button>
         </div>
         <div class="lp-barwrap"><div class="lp-bar" id="lpBar" style="width:0%"></div></div>
-        <div class="lp-bartxt" id="lpBarTxt">0 / 200 XP para Operario</div>
-        <div class="lp-div"></div>
-        <div class="lp-shield-row">
-          <div class="lp-shield-ico">🛡️</div>
-          <div>
-            <div class="lp-shield-txt" id="lpShieldTxt">Sin protectores</div>
-            <div class="lp-shield-sub">+1 cada 10 aciertos seguidos</div>
-          </div>
-        </div>
+        <div class="lp-bartxt" id="lpBarTxt">0 / 700 XP para Operario</div>
         <div class="lp-div"></div>
         <div class="lp-ligas-title">Todas las ligas</div>
         <div id="lpLigas"></div>
+        <div class="lp-div"></div>
+        <button class="lp-canje-btn" onclick="openCanje(event)">🎓 Canjear XP por nota extra</button>
       </div>
     </div>
   </div>
@@ -183,6 +230,7 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
       <div class="rl">Racha sin fallos</div>
       <div class="rn" id="rn">0</div>
       <div class="rf" id="rf">⚡</div>
+      <div class="rmult" id="rmult">×1 XP</div>
       <div class="rm" id="rm">¡Empieza hoy!</div>
       <div class="rb" id="rb"></div>
     </div>
@@ -202,10 +250,19 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
   </div>
 </div>
 
+<!-- BONUS BIENVENIDA -->
+<div class="bonus-ov" id="bonusOv">
+  <div class="bonus-box">
+    <div class="bonus-icon">🎁</div>
+    <div class="bonus-title">¡Bonus de bienvenida!</div>
+    <div class="bonus-txt">Has acertado tus 3 primeras preguntas seguidas.<br><strong style="color:#C4F135;">¡Te regalamos 50 XP!</strong><br><br>Ya puedes canjear tu primer código de nota extra en el Aula Virtual. ¡Es nuestra forma de darte la bienvenida!</div>
+    <button class="bonus-btn" onclick="closeBonusOv()">¡Genial! →</button>
+  </div>
+</div>
+
 <!-- MINI-JUEGO -->
 <div class="mgov" id="mgov">
   <div class="mgbox">
-    <!-- PANTALLA INICIO -->
     <div id="mgIntro">
       <div class="mg-title">⚡ ¡Bonus desbloqueado!</div>
       <div style="font-size:32px;margin:10px 0;">🎯</div>
@@ -214,7 +271,6 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
       <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:16px;">13+ emojis = 🛡️ protector de racha</div>
       <button class="mg-btn" onclick="startMG()">¡Empezar! →</button>
     </div>
-    <!-- PANTALLA JUEGO -->
     <div id="mgGame" style="display:none">
       <div class="mg-title">⚡ ¡Caza los emojis!</div>
       <div class="mg-sub" id="mgSub">¡Toca todos los que puedas!</div>
@@ -222,7 +278,6 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
       <div class="mg-count" id="mgCount">Cazados: 0</div>
       <div class="mg-grid" id="mgGrid"></div>
     </div>
-    <!-- RESULTADO -->
     <div class="mg-result" id="mgResult" style="display:none">
       <div class="mg-result-icon" id="mgResIcon">📦</div>
       <div class="mg-result-title" id="mgResTitle">¡Bien!</div>
@@ -232,16 +287,53 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
   </div>
 </div>
 
-<script>
-var LIGAS=[
-  {name:'Aprendiz de almacén',icon:'📦',xp:0},
-  {name:'Operario',icon:'🏷️',xp:200},
-  {name:'Picker',icon:'🔍',xp:500},
-  {name:'Responsable de turno',icon:'📋',xp:1000},
-  {name:'Jefe de almacén',icon:'🚛',xp:2000},
-  {name:'Director logístico',icon:'🏭',xp:4000}
-];
+<!-- CANJEADOR -->
+<div class="canje-overlay" id="canjeOverlay">
+  <div class="canje-box">
+    <div class="canje-screen active" id="cs0">
+      <div class="canje-title">🎓 Canjear XP por nota extra</div>
+      <div class="canje-sub">Convierte tu experiencia acumulada en puntos extra para tu nota final en el Aula Virtual.</div>
+      <div class="canje-warn">⚠️ Tu código es personal e intransferible. Está vinculado a tu nombre y solo funciona para ti.</div>
+      <div id="cs0prev" style="display:none">
+        <div style="font-size:9px;color:rgba(255,255,255,.4);margin-bottom:4px;">Tu último código generado:</div>
+        <div class="canje-prev"><span class="canje-prev-code" id="cs0prevCode">—</span><button class="canje-prev-copy" onclick="copyPrevCode()">Copiar</button></div>
+      </div>
+      <button class="canje-opt-btn" onclick="showCS(1)">✨ Es mi primera vez canjeando</button>
+      <button class="canje-opt-btn" onclick="showCS(2)">🔄 Ya canjeé antes y tengo un código</button>
+      <button class="canje-back-btn" onclick="closeCanje()">Cancelar</button>
+    </div>
+    <div class="canje-screen" id="cs1">
+      <div class="canje-title">✨ Primera vez</div>
+      <div class="canje-sub">Introduce tu nombre y apellidos exactamente como aparecen en el Aula Virtual.</div>
+      <input class="canje-input" id="canjeNombre" placeholder="Nombre Apellido1 Apellido2" maxlength="60">
+      <div class="canje-err" id="canjeErr1">Introduce nombre y al menos un apellido.</div>
+      <button class="canje-confirm-btn" onclick="generarCodigo(false)">Generar mi código →</button>
+      <button class="canje-back-btn" onclick="showCS(0)">← Volver</button>
+    </div>
+    <div class="canje-screen" id="cs2">
+      <div class="canje-title">🔄 Acumular canje</div>
+      <div class="canje-sub">Introduce tu código anterior para sumar el XP ya canjeado al actual.</div>
+      <input class="canje-input" id="canjeCodigoAnterior" placeholder="Tu código anterior" maxlength="30">
+      <div class="canje-err" id="canjeErr2">Código no reconocido.</div>
+      <button class="canje-confirm-btn" onclick="generarCodigo(true)">Acumular y generar →</button>
+      <button class="canje-back-btn" onclick="showCS(0)">← Volver</button>
+    </div>
+    <div class="canje-screen" id="cs3">
+      <div class="canje-title">✅ ¡Código generado!</div>
+      <div class="canje-sub">Copia este código e introdúcelo en el cuestionario de canje del Aula Virtual.</div>
+      <div class="canje-code-box">
+        <div class="canje-code" id="canjeCodigoFinal">—</div>
+        <div class="canje-code-hint">Introdúcelo exactamente así en el Aula Virtual</div>
+      </div>
+      <div class="canje-resumen" id="canjeResumen"></div>
+      <button class="canje-copy-btn" onclick="copyCodigo()">📋 Copiar código</button>
+      <div class="canje-warn">⚠️ Este código es tuyo y personal. No lo compartas con nadie.</div>
+      <button class="canje-close-btn" onclick="closeCanje()">Cerrar</button>
+    </div>
+  </div>
+</div>
 
+<script>
 var QS=[
 {t:'mc',h:'¿Sabías que...',q:'¿Qué significa FIFO en gestión de almacén?',o:['First In First Out','Fast Inventory Flow Order','Full Item Final Output','Fixed Index For Orders'],a:0,f:'Lo primero que entra es lo primero que sale. Esencial en productos con caducidad.'},
 {t:'mc',h:'¿Cuál crees que es...', q:'¿Cuál es la unidad de medida de los contenedores marítimos?',o:['TEU (Twenty-foot Equivalent Unit)','CEU (Container Equivalent Unit)','PEU (Port Entry Unit)','MEU (Maritime Export Unit)'],a:0,f:'Hay más de 800 millones de movimientos TEU anuales en todo el mundo.'},
@@ -312,12 +404,82 @@ var QS=[
 {t:'mc',h:'¡Dato curioso!',q:'¿Qué es el embalaje secundario de un producto?',o:['El que agrupa varias unidades de venta (caja, bandeja)','El envase que toca el producto','El plástico de paletización','El contenedor de transporte marítimo'],a:0,f:'El embalaje primario toca el producto, el secundario lo agrupa y el terciario lo prepara para transporte.'},
 {t:'mc',h:'¿Cuál crees que...',q:'¿Qué herramienta se usa para medir la productividad de un almacén?',o:['KPIs logísticos (líneas/hora, coste por pedido)','Solo la opinión del jefe','El número de empleados','El tamaño del almacén en m²'],a:0,f:'Los KPIs logísticos permiten comparar rendimiento con la competencia mediante benchmarking sectorial.'},
 {t:'mc',h:'¿Sabías que...',q:'¿Qué es un operador logístico integral?',o:['Empresa que gestiona transporte, almacenaje y distribución para terceros','Un transportista autónomo','El departamento de logística de una empresa','Una empresa de mensajería urgente'],a:0,f:'DHL, XPO, ID Logistics o DSV son ejemplos de operadores logísticos integrales en España.'},
-{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el flujo tenso en logística?',o:['Abastecer la producción sin apenas stock intermedio','Un tipo de transporte urgente','El flujo de mercancía peligrosa','El movimiento rápido en almacén'],a:0,f:'El flujo tenso es el extremo del just-in-time: la mercancía llega justo cuando se necesita.'}
+{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el flujo tenso en logística?',o:['Abastecer la producción sin apenas stock intermedio','Un tipo de transporte urgente','El flujo de mercancía peligrosa','El movimiento rápido en almacén'],a:0,f:'El flujo tenso es el extremo del just-in-time: la mercancía llega justo cuando se necesita.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "gestión por categorías" en el almacén?',o:['Organizar y gestionar productos por familias para optimizar su rendimiento','Clasificar al personal por categorías profesionales','Un sistema de archivo de documentos','La división del almacén en zonas de temperatura'],a:0,f:'La gestión por categorías permite negociar mejor con proveedores y optimizar el espacio de almacenamiento.'},
+{t:'mc',h:'¡Decide como un profesional!',q:'Un proveedor entrega 100 unidades pero el pedido era de 120. ¿Qué documento generas?',o:['Albarán de recepción parcial con nota de incidencia','Factura rectificativa al proveedor','Pedido de devolución completo','Ninguno hasta recibir el resto'],a:0,f:'Documentar siempre la recepción parcial protege legalmente al almacén y activa el seguimiento del pedido pendiente.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "huella de carbono logística"?',o:['Las emisiones de CO₂ generadas por las operaciones de transporte y almacenaje','El impacto de los embalajes en el suelo','La contaminación acústica de los almacenes','El consumo eléctrico de las cámaras frigoríficas'],a:0,f:'La logística representa el 8% de las emisiones globales de CO₂. La logística verde es una tendencia creciente en el sector.'},
+{t:'mc',h:'¿Cuál crees que...', q:'¿Qué es un "operario polivalente" en el almacén?',o:['Trabajador formado para realizar múltiples tareas dentro del almacén','Un operario con contrato a tiempo parcial','El responsable de varios almacenes','Un trabajador externo de una ETT'],a:0,f:'La polivalencia reduce la dependencia de trabajadores específicos y mejora la flexibilidad operativa del almacén.'},
+{t:'mc',h:'¡Dato curioso!',q:'¿Qué es el "slotting" en gestión de almacenes?',o:['La asignación óptima de ubicaciones a los productos según su rotación','El proceso de etiquetar los productos','Un sistema de alarmas del almacén','La planificación de turnos del personal'],a:0,f:'Un buen slotting puede reducir los recorridos de picking hasta un 40% y mejorar significativamente la productividad.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "ventana de entrega" en logística?',o:['El intervalo de tiempo acordado para recibir o entregar mercancía','La apertura física del muelle de carga','El plazo máximo de devolución','El horario del personal de recepción'],a:0,f:'Respetar las ventanas de entrega es crítico en grandes superficies y plataformas logísticas para evitar cuellos de botella.'},
+{t:'mc',h:'¿Qué harías tú?',q:'Detectas que un producto almacenado ha caducado. ¿Cuál es el procedimiento correcto?',o:['Segregar el producto, etiquetar como no conforme y notificar al responsable','Devolverlo al proveedor sin documentar','Tirarlo directamente al contenedor','Mantenerlo en stock hasta que llegue más producto'],a:0,f:'Los productos no conformes deben gestionarse según el protocolo de calidad para evitar su salida al mercado.'},
+{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el "aprovisionamiento" en la cadena de suministro?',o:['El proceso de obtener los materiales o productos necesarios para la actividad','La distribución final al cliente','El almacenamiento temporal de mercancía','La gestión de devoluciones'],a:0,f:'El aprovisionamiento incluye la selección de proveedores, negociación, pedido y recepción de materiales.'},
+{t:'mc',h:'¡Sorpréndete!',q:'¿Qué porcentaje del tiempo de un operario de picking se dedica a desplazamientos?',o:['Entre el 50% y el 70%','Menos del 20%','Exactamente el 40%','Más del 80%'],a:0,f:'Por eso la optimización de rutas de picking y el slotting son tan importantes para la productividad.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "logística de última milla"?',o:['El tramo final de entrega desde el centro de distribución hasta el destinatario','El último turno de trabajo del día','La revisión final antes de expedir un pedido','El control de calidad del producto terminado'],a:0,f:'La última milla representa hasta el 50% del coste logístico total y es el mayor reto del e-commerce.'},
+{t:'mc',h:'¿Cuál elegirías?',q:'Para almacenar productos con mucha variedad de referencias y baja rotación, ¿qué sistema usarías?',o:['Almacén convencional con estanterías selectivas','Cross-docking','Almacén automático de alta velocidad','Sistema de flujo tenso'],a:0,f:'El almacén convencional permite acceder a cualquier referencia en cualquier momento, ideal para surtidos amplios.'},
+{t:'mc',h:'¿Lo sabías?',q:'¿Qué es el "muestreo" en el control de calidad de recepción?',o:['Inspeccionar una parte representativa de la mercancía para validar el lote completo','Revisar todas las unidades recibidas una a una','Pedir muestras gratuitas al proveedor','El proceso de etiquetar los productos al azar'],a:0,f:'Los planes de muestreo (como la norma ISO 2859) permiten controlar la calidad sin revisar el 100% de las unidades.'},
+{t:'mc',h:'¡Decide!',q:'¿Qué es el "tiempo de preparación" o setup time en el almacén?',o:['El tiempo necesario para preparar una zona o equipo antes de iniciar la operación','El tiempo de espera del camión en el muelle','La duración del inventario anual','El tiempo de formación de un nuevo operario'],a:0,f:'Reducir el setup time es un objetivo del lean logistics para maximizar el tiempo productivo.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "gestión de proveedores" en el contexto del almacén?',o:['El seguimiento y evaluación del rendimiento de los proveedores','La negociación del precio de compra','El proceso de homologar nuevos productos','La gestión de las facturas de compra'],a:0,f:'Evaluar a los proveedores por puntualidad, calidad y servicio permite reducir incidencias en la recepción hasta un 60%.'},
+{t:'mc',h:'¿Cuál crees?',q:'¿Qué es la "capacidad de almacenamiento" de un almacén?',o:['El volumen máximo de mercancía que puede albergar en condiciones operativas','El número máximo de operarios que pueden trabajar a la vez','La cantidad máxima de pedidos diarios','El peso máximo que soporta el suelo'],a:0,f:'La capacidad se mide en m³ o en número de palets y determina la inversión necesaria en infraestructura.'},
+{t:'mc',h:'¡Ponlo a prueba!',q:'¿Qué es el "índice de roturas" en un almacén?',o:['El porcentaje de productos dañados respecto al total gestionado','El número de estanterías rotas al año','La frecuencia de averías de las carretillas','El ratio de bajas laborales por accidente'],a:0,f:'Un índice de roturas superior al 0.5% suele ser señal de problemas en el embalaje, manipulación o almacenamiento.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es el "layout" de un almacén?',o:['La distribución física y organización del espacio dentro del almacén','El software de gestión del almacén','El plan de prevención de riesgos laborales','El diseño gráfico de las señales de seguridad'],a:0,f:'Un buen layout puede reducir los costes operativos hasta un 25% al minimizar recorridos y mejorar los flujos.'},
+{t:'mc',h:'¿Cuál es mejor?',q:'¿Qué ventaja tiene el almacén automatizado frente al convencional?',o:['Mayor velocidad, precisión y aprovechamiento del espacio en altura','Menor coste de inversión inicial','Más flexibilidad para cambios de producto','Menor consumo energético siempre'],a:0,f:'Los almacenes automáticos pueden trabajar 24/7, reducen errores humanos y aprovechan la altura hasta 40 metros.'},
+{t:'mc',h:'¿Lo sabías?',q:'¿Qué es la "tasa de servicio al cliente" en logística?',o:['El porcentaje de pedidos entregados completos, correctos y a tiempo','El número de incidencias resueltas en 24 horas','La valoración media del cliente sobre el repartidor','El coste del servicio de atención posventa'],a:0,f:'Una tasa de servicio del 99% es el objetivo de muchas empresas líderes en logística.'},
+{t:'drag',h:'¡Ordena si eres capaz!',q:'Ordena las fases del proceso de gestión de stocks (toca un chip y luego una ranura):',i:['Análisis ABC','Cálculo del stock de seguridad','Definición del punto de pedido','Revisión periódica del inventario','Lanzamiento del pedido de reposición'],o:[0,1,2,4,3],f:'Una buena gestión de stocks reduce el capital inmovilizado y evita tanto las roturas como el sobrestock.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "obsolescencia" de un producto en el almacén?',o:['La pérdida de valor o utilidad de un producto por quedar desfasado','La caducidad de un producto alimentario','El deterioro físico por mal almacenamiento','La devolución de un producto defectuoso'],a:0,f:'La obsolescencia es especialmente crítica en electrónica y moda, donde los ciclos de producto son muy cortos.'},
+{t:'mc',h:'¡Decide como un profesional!',q:'¿Qué diferencia hay entre "rotura de stock" y "agotamiento de stock"?',o:['La rotura es inesperada; el agotamiento es planificado al final del ciclo del producto','Son lo mismo pero con diferente nombre','La rotura afecta solo a materias primas','El agotamiento solo ocurre en productos frescos'],a:0,f:'Gestionar correctamente el agotamiento planificado evita el sobrestock al final de la temporada.'},
+{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el "cross-docking asistido"?',o:['Cross-docking donde se realizan operaciones de valor añadido como etiquetado o reempaquetado','Un tipo de cross-docking con robots','El cross-docking con temperatura controlada','Un cross-docking para mercancías peligrosas'],a:0,f:'El cross-docking asistido añade valor sin almacenamiento prolongado, muy usado en la distribución de gran consumo.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es el "número IMEI" en logística de electrónica?',o:['El identificador único de cada terminal móvil para su trazabilidad','El código de barras del embalaje del producto','El número de lote del fabricante','El código de homologación europeo'],a:0,f:'El IMEI permite rastrear cada dispositivo individualmente, lo que es fundamental en logística de electrónica de consumo.'},
+{t:'mc',h:'¿Qué harías tú?',q:'Un camión llega con 2 horas de retraso fuera de la ventana de entrega acordada. ¿Qué haces?',o:['Registrar el retraso, evaluar si se puede recepcionar y notificar al departamento correspondiente','Rechazar la entrega automáticamente','Aceptar sin documentar para no retrasar la producción','Llamar al transportista para que vuelva mañana'],a:0,f:'La decisión depende del impacto operativo, pero siempre hay que documentar el incumplimiento del proveedor.'},
+{t:'mc',h:'¿Lo sabías?',q:'¿Qué es la "logística inversa verde"?',o:['La gestión ecológica de devoluciones, reciclaje y residuos en la cadena de suministro','El transporte de mercancías de forma sostenible','El uso de vehículos eléctricos en el reparto','La reducción del embalaje en los productos'],a:0,f:'La logística inversa verde incluye la recuperación, reciclaje y reutilización de productos al final de su vida útil.'},
+{t:'mc',h:'¡Sorpréndete!',q:'¿Cuánto puede reducir costes un buen sistema de gestión de turnos en el almacén?',o:['Entre un 10% y un 20% en costes de personal','Nada, el personal es un coste fijo','Solo si hay horas extra','Hasta un 50% en todos los casos'],a:0,f:'La planificación optimizada de turnos adapta la capacidad a la demanda real y reduce horas ociosas y horas extra.'},
+{t:'mc',h:'¿Cuál crees?',q:'¿Qué es el "tiempo de takt" en producción y logística?',o:['El ritmo al que debe producirse o prepararse para satisfacer la demanda del cliente','El tiempo de carga de un camión','El tiempo entre dos inventarios','La velocidad máxima de una carretilla'],a:0,f:'El takt time viene del alemán "Takt" (compás) y es el corazón del sistema de producción lean.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es el "empuje" (push) vs "tirón" (pull) en logística?',o:['Push produce según previsiones; pull produce según demanda real','Push es más eficiente siempre','Pull solo funciona en e-commerce','Son lo mismo aplicado a distintos sectores'],a:0,f:'El sistema pull (kanban) minimiza el sobrestock. El push es más eficiente cuando la demanda es estable y predecible.'},
+{t:'mc',h:'¿Lo sabías?',q:'¿Qué es la "ventana FIFO" en sistemas de almacenaje automatizado?',o:['La garantía de que el sistema expide siempre el artículo más antiguo primero','Una ventana de visualización del software WMS','El tiempo máximo de permanencia en el almacén','Un tipo de estantería con ventilación'],a:0,f:'En almacenes automáticos, el FIFO se gestiona por software sin necesidad de organización física manual.'},
+{t:'mc',h:'¡Decide!',q:'¿Qué es la "certificación de operador económico autorizado" (OEA)?',o:['Un reconocimiento aduanero que agiliza los trámites de importación/exportación','Una certificación de calidad ISO para transportistas','El carnet profesional del jefe de almacén','Una licencia para transportar mercancías peligrosas'],a:0,f:'Las empresas con certificación OEA disfrutan de controles aduaneros simplificados y mayor velocidad en frontera.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es el "picking por imagen" o pick-by-vision?',o:['Sistema que usa gafas de realidad aumentada para guiar al operario visualmente','Un sistema de cámaras que controla los errores de picking','La verificación fotográfica de los pedidos','El uso de escáneres de código de barras inalámbricos'],a:0,f:'Las gafas de realidad aumentada pueden combinar pick-by-light y pick-by-voice para lograr precisiones del 99.99%.'},
+{t:'mc',h:'¿Cuál crees?',q:'¿Qué es la "capacidad de carga" de una estantería?',o:['El peso máximo que puede soportar por nivel o en total','El número máximo de referencias almacenables','La altura máxima a la que puede operar una carretilla','El espacio libre entre niveles'],a:0,f:'Superar la capacidad de carga de una estantería es una de las principales causas de accidentes graves en almacén.'},
+{t:'mc',h:'¡Ponlo a prueba!',q:'¿Qué es el "plazo de conservación" de un producto?',o:['El tiempo máximo durante el cual el producto mantiene sus propiedades en condiciones adecuadas','La fecha de caducidad impresa en el envase','El tiempo de garantía del fabricante','El plazo de devolución al proveedor'],a:0,f:'El plazo de conservación puede ser mayor que la fecha de consumo preferente, pero requiere condiciones específicas de almacenaje.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es el "mapa de procesos" en un almacén?',o:['La representación visual de todos los procesos y su relación dentro del almacén','El plano físico del almacén con las ubicaciones','El diagrama de organigrama del personal','El listado de procedimientos de seguridad'],a:0,f:'El mapa de procesos es la base para identificar ineficiencias y diseñar mejoras en la operativa del almacén.'},
+{t:'mc',h:'¿Cuál elegirías?',q:'Para un almacén con productos de gran volumen y baja rotación, ¿qué sistema es mejor?',o:['Almacenamiento en bloque (apilado directo en suelo)','Estanterías dinámicas con rodillos','Picking tower automatizado','Almacén caótico con WMS'],a:0,f:'El almacenamiento en bloque maximiza el uso del suelo pero requiere LIFO, aceptable para productos homogéneos.'},
+{t:'mc',h:'¿Lo sabías?',q:'¿Qué es la "planificación de la demanda" en logística?',o:['La previsión de las necesidades futuras de stock basada en datos históricos y tendencias','La programación de los turnos de trabajo','El plan anual de compras al proveedor principal','La definición de los objetivos de ventas'],a:0,f:'Una buena planificación de la demanda puede reducir el stock medio hasta un 30% manteniendo el nivel de servicio.'},
+{t:'drag',h:'¡Ordena si eres capaz!',q:'Ordena las fases de un plan de seguridad en el almacén:',i:['Formación del personal','Identificación de riesgos','Simulacro de emergencia','Medidas preventivas','Evaluación de riesgos'],o:[1,4,3,0,2],f:'La prevención de riesgos laborales sigue siempre este orden lógico: identificar, evaluar, prevenir, formar y practicar.'},
+{t:'mc',h:'¿Sabías que...',q:'¿Qué es la "logística colaborativa"?',o:['La colaboración entre empresas para compartir recursos logísticos y reducir costes','El trabajo en equipo dentro del almacén','La coordinación entre almacén y tienda','Un sistema de comunicación entre operarios'],a:0,f:'Empresas competidoras como Carrefour y Leclerc comparten a veces plataformas logísticas en zonas rurales para reducir costes.'},
+{t:'mc',h:'¡Decide como un profesional!',q:'¿Cuál es la diferencia entre "control de calidad" e "inspección" en recepción?',o:['El control es sistemático y preventivo; la inspección es puntual y detectiva','Son exactamente lo mismo','El control lo hace el proveedor; la inspección el almacén','La inspección es más completa que el control'],a:0,f:'Un buen sistema de control de calidad reduce la necesidad de inspección, que es costosa e improductiva.'}
 ];
+var LIGAS=[
+  {name:'Aprendiz de almacén',icon:'📦',xp:0},
+  {name:'Operario',icon:'🏷️',xp:700},
+  {name:'Picker',icon:'🔍',xp:1900},
+  {name:'Responsable de turno',icon:'📋',xp:3900},
+  {name:'Jefe de almacén',icon:'🚛',xp:6500},
+  {name:'Director logístico',icon:'🏭',xp:10500}
+];
+
+var TRAMOS=[
+  {xp:50,   sufijo:'R7M-2KV9', nota:0.05,  pct:'5'},
+  {xp:300,  sufijo:'W4N-8PL3', nota:0.10,  pct:'10'},
+  {xp:700,  sufijo:'T9B-5FX1', nota:0.14,  pct:'14.28571'},
+  {xp:1200, sufijo:'K3J-7ZQ6', nota:0.17,  pct:'16.66667'},
+  {xp:1900, sufijo:'H6D-4WR8', nota:0.20,  pct:'20'},
+  {xp:2800, sufijo:'N2S-9MK5', nota:0.25,  pct:'25'},
+  {xp:3900, sufijo:'V8L-1CT4', nota:0.30,  pct:'30'},
+  {xp:5200, sufijo:'Q5G-6HP2', nota:0.33,  pct:'33.33333'},
+  {xp:6500, sufijo:'B1X-3NV7', nota:0.40,  pct:'40'},
+  {xp:8000, sufijo:'F4W-8RJ9', nota:0.50,  pct:'50'},
+  {xp:9000, sufijo:'Z7K-2DT5', nota:0.60,  pct:'60'},
+  {xp:9800, sufijo:'L3P-6BQ1', nota:0.67,  pct:'66.66667'},
+  {xp:10500,sufijo:'M9C-4LW8', nota:0.70,  pct:'70'},
+  {xp:11100,sufijo:'E2V-7SK3', nota:0.75,  pct:'75'},
+  {xp:11600,sufijo:'J6H-1NF9', nota:0.80,  pct:'80'},
+  {xp:12000,sufijo:'G8T-5ZM2', nota:0.83,  pct:'83.33333'},
+  {xp:12350,sufijo:'D4R-9BX6', nota:0.90,  pct:'90'},
+  {xp:13200,sufijo:'A9V-2HT1', nota:1.00,  pct:'100'}
+];
+
 function seededRand(seed){var x=Math.sin(seed+1)*10000;return x-Math.floor(x);}
 function shuffleSeeded(arr,seed){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(seededRand(seed+i)*(i+1));var tmp=a[i];a[i]=a[j];a[j]=tmp;}return a;}
 
-var MOTS=[[0,'¡Empieza tu racha hoy!'],[1,'¡Primera correcta! Sigue así 💪'],[2,'¡Racha de 2! Calentando motores...'],[3,'¡3 seguidas! Ya te lo estás currando 🔥'],[5,'¡5 seguidas! Huele a profesional 💥'],[7,'¡Imparable! 7 sin fallar 🌟'],[10,'¡10 SEGUIDAS! Eres un crack 🏆'],[15,'¡15! Podrías dar tú la clase 👑'],[20,'¡20 SIN FALLO! Leyenda del almacén 🥇'],[999,'¡Racha brutal! Nadie llega tan lejos 🚀']];
+var MOTS=[[0,'¡Empieza tu racha hoy!'],[1,'¡Primera correcta! Sigue así 💪'],[2,'¡Racha de 2! Calentando motores...'],[3,'¡3 seguidas! Ya te lo estás currando 🔥'],[5,'¡5 seguidas! ×1.5 XP activado 💥'],[7,'¡Imparable! 7 sin fallar 🌟'],[10,'¡10 SEGUIDAS! ×2 XP activado 🏆'],[15,'¡15! Podrías dar tú la clase 👑'],[20,'¡20 SIN FALLO! Leyenda del almacén 🥇'],[999,'¡Racha brutal! Nadie llega tan lejos 🚀']];
 var PRIZES=[{e:'📦',t:'¡Artículo bien ubicado!'},{e:'🏷️',t:'¡SKU verificado!'},{e:'✅',t:'¡Picking sin errores!'},{e:'🚛',t:'¡Expedición aprobada!'},{e:'🔥',t:'¡Racha en marcha!'},{e:'🌟',t:'¡Top operario!'},{e:'🏆',t:'¡Profesional en formación!'},{e:'💥',t:'¡Correcto!'}];
 var EMOJIS=['📦','🏭','🚛','📋','🔍','🏷️','🪣','📊','⚙️','🔧','📬','🗂️'];
 var MG_EMOJIS=['📦','🚛','🏷️','🔍','📋','⚙️','🔧','📬','🗂️','🪣','📊','🏭'];
@@ -326,20 +488,29 @@ function gToday(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'
 function gDay(){return Math.floor((new Date()-new Date(2024,8,1))/86400000);}
 
 var streak=0,best=0,atd=false,savedAns=-1,shield=0,xp=0;
+var bonusGiven=false,firstThreeOk=0;
+var alumnoId='',alumnoNombre='',xpCanjeado=0,lastCodigo='';
 try{
   streak=parseInt(localStorage.getItem('alm_s')||'0');
   best=parseInt(localStorage.getItem('alm_b')||'0');
   shield=parseInt(localStorage.getItem('alm_shield')||'0');
   xp=parseInt(localStorage.getItem('alm_xp')||'0');
+  bonusGiven=localStorage.getItem('alm_bonus')==='1';
+  firstThreeOk=parseInt(localStorage.getItem('alm_f3')||'0');
   atd=localStorage.getItem('alm_atd')===gToday();
   savedAns=atd?parseInt(localStorage.getItem('alm_ans')||'-1'):-1;
+  alumnoId=localStorage.getItem('alm_uid')||'';
+  alumnoNombre=localStorage.getItem('alm_uname')||'';
+  xpCanjeado=parseInt(localStorage.getItem('alm_xpc')||'0');
+  lastCodigo=localStorage.getItem('alm_lastcode')||'';
 }catch(e){}
 
 function save(ans){
   try{
     localStorage.setItem('alm_s',streak);localStorage.setItem('alm_b',best);
     localStorage.setItem('alm_atd',gToday());localStorage.setItem('alm_shield',shield);
-    localStorage.setItem('alm_xp',xp);
+    localStorage.setItem('alm_xp',xp);localStorage.setItem('alm_bonus',bonusGiven?'1':'0');
+    localStorage.setItem('alm_f3',firstThreeOk);
     if(ans!==undefined)localStorage.setItem('alm_ans',ans);
   }catch(e){}
 }
@@ -351,8 +522,9 @@ function getLigaProgress(v){
   var cur=LIGAS[idx].xp,next=LIGAS[idx+1].xp;
   return{pct:Math.min(100,Math.round((v-cur)/(next-cur)*100)),cur:v-cur,next:next-cur,idx:idx};
 }
+function getMult(){return streak>=10?2:streak>=5?1.5:1;}
 function addXP(amount){
-  var mult=streak>=10?2:streak>=5?1.5:1;
+  var mult=getMult();
   var gain=Math.round(amount*mult);
   var oldIdx=getLigaIdx(xp);xp+=gain;
   var newIdx=getLigaIdx(xp);
@@ -366,6 +538,12 @@ function subtractXP(amount){
 
 function getMot(n){var m=MOTS[0][1];for(var i=0;i<MOTS.length;i++){if(n>=MOTS[i][0])m=MOTS[i][1];}return m;}
 function getFire(n){if(n===0)return'⚡';if(n<3)return'🔥';if(n<7)return'💥';if(n<10)return'🌟';if(n<15)return'🏆';return'👑';}
+function getMultTxt(n){
+  if(n>=10)return'×2 XP 🔥';
+  if(n>=5)return'×1.5 XP';
+  return'×1 XP';
+}
+function getMultActive(n){return n>=5;}
 
 function updUI(){
   var rn=document.getElementById('rn');
@@ -374,9 +552,13 @@ function updUI(){
   document.getElementById('rf').textContent=getFire(streak);
   document.getElementById('rm').textContent=getMot(streak);
   document.getElementById('rb').textContent=best>0?'Récord: '+best:'';
+  var rm=document.getElementById('rmult');
+  rm.textContent=getMultTxt(streak);
+  rm.className=getMultActive(streak)?'rmult active':'rmult';
   var sb=document.getElementById('shieldBadge');
   document.getElementById('shieldTxt').textContent='x'+shield;
   sb.className=shield>0?'shield-badge has-shield':'shield-badge';
+  document.getElementById('spCount').textContent=shield;
   var prog=getLigaProgress(xp);
   var liga=LIGAS[prog.idx];
   document.getElementById('lvlIcon').textContent=liga.icon;
@@ -385,20 +567,22 @@ function updUI(){
   document.getElementById('lvlXp').textContent=xp+' XP';
 }
 
+// PANELS
 function togglePanel(e){
   e.stopPropagation();
-  var panel=document.getElementById('lvlPanel');
-  if(panel.classList.contains('open')){
-    panel.classList.remove('open');
-  } else {
-    updatePanel();
-    panel.classList.add('open');
-  }
+  var p=document.getElementById('lvlPanel');
+  if(p.classList.contains('open')){p.classList.remove('open');}
+  else{updatePanel();p.classList.add('open');closeShieldPanel();}
 }
-function closePanel(e){
-  if(e)e.stopPropagation();
-  document.getElementById('lvlPanel').classList.remove('open');
+function closePanel(e){if(e)e.stopPropagation();document.getElementById('lvlPanel').classList.remove('open');}
+function toggleShieldPanel(e){
+  e.stopPropagation();
+  var p=document.getElementById('shieldPanel');
+  if(p.classList.contains('open')){p.classList.remove('open');}
+  else{p.classList.add('open');closePanel();}
 }
+function closeShieldPanel(e){if(e)e.stopPropagation();document.getElementById('shieldPanel').classList.remove('open');}
+
 function updatePanel(){
   var prog=getLigaProgress(xp);
   var liga=LIGAS[prog.idx];
@@ -408,7 +592,6 @@ function updatePanel(){
   document.getElementById('lpXp').textContent=xp+' XP totales';
   document.getElementById('lpBar').style.width=prog.pct+'%';
   document.getElementById('lpBarTxt').textContent=nextLiga?prog.cur+' / '+prog.next+' XP para '+nextLiga.name:'¡Nivel máximo!';
-  document.getElementById('lpShieldTxt').textContent=shield===0?'Sin protectores':shield+(shield===1?' protector':' protectores');
   var html='';
   for(var i=0;i<LIGAS.length;i++){
     var l=LIGAS[i];
@@ -420,18 +603,33 @@ function updatePanel(){
 }
 
 document.addEventListener('click',function(e){
-  var panel=document.getElementById('lvlPanel');
-  var badge=document.getElementById('lvlBadge');
-  if(panel&&panel.classList.contains('open')){
-    if(!panel.contains(e.target)&&!badge.contains(e.target)){
-      panel.classList.remove('open');
-    }
-  }
+  var lp=document.getElementById('lvlPanel'),lb=document.getElementById('lvlBadge');
+  var sp=document.getElementById('shieldPanel'),sb=document.getElementById('shieldBadge');
+  if(lp&&lp.classList.contains('open')&&!lp.contains(e.target)&&!lb.contains(e.target))lp.classList.remove('open');
+  if(sp&&sp.classList.contains('open')&&!sb.contains(e.target))sp.classList.remove('open');
 });
 
-// ---- MINI-JUEGO ----
-var mgActive=false,mgCaught=0,mgTimerInt=null,mgSpawnInt=null;
-var questionsAnswered=0;
+// BONUS BIENVENIDA
+function closeBonusOv(){document.getElementById('bonusOv').classList.remove('show');}
+function checkBonus(correct){
+  if(bonusGiven)return;
+  if(correct){
+    firstThreeOk++;
+    try{localStorage.setItem('alm_f3',firstThreeOk);}catch(e){}
+    if(firstThreeOk>=3){
+      bonusGiven=true;xp+=50;
+      try{localStorage.setItem('alm_bonus','1');localStorage.setItem('alm_xp',xp);}catch(e){}
+      updUI();
+      setTimeout(function(){document.getElementById('bonusOv').classList.add('show');},1200);
+    }
+  }else{
+    firstThreeOk=0;
+    try{localStorage.setItem('alm_f3','0');}catch(e){}
+  }
+}
+
+// MINI-JUEGO
+var mgActive=false,mgCaught=0,mgTimerInt=null,mgSpawnInt=null,questionsAnswered=0;
 function shouldTriggerMG(){return questionsAnswered>0&&questionsAnswered%7===0&&Math.random()<0.6;}
 function openMG(){
   mgActive=false;mgCaught=0;
@@ -442,7 +640,6 @@ function openMG(){
   document.getElementById('mgBtn').style.display='none';
   document.getElementById('mgov').classList.add('show');
 }
-
 function startMG(){
   mgActive=true;mgCaught=0;
   document.getElementById('mgIntro').style.display='none';
@@ -505,8 +702,7 @@ function endMG(){
   if(shieldGain>0)confettiMG();
 }
 function confettiMG(){
-  var box=document.querySelector('.mgbox');
-  var cols=['#C4F135','#F06B6B','#fff','#FFD700'];
+  var box=document.querySelector('.mgbox'),cols=['#C4F135','#F06B6B','#fff','#FFD700'];
   for(var i=0;i<20;i++){
     var c=document.createElement('div');
     c.style.cssText='position:absolute;border-radius:2px;width:'+(5+Math.random()*5)+'px;height:'+(5+Math.random()*5)+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';left:'+(10+Math.random()*80)+'%;top:10px;animation:cfall '+(1+Math.random()*.7)+'s ease-in forwards;animation-delay:'+(Math.random()*.3)+'s;';
@@ -515,6 +711,7 @@ function confettiMG(){
 }
 function closeMG(){document.getElementById('mgov').classList.remove('show');clearInterval(mgTimerInt);clearInterval(mgSpawnInt);mgActive=false;}
 
+// PREGUNTAS
 var cQ=null,cQShuffled=null,selId=null,selTxt=null,slots=[];
 
 function getDayQuestion(){
@@ -555,9 +752,11 @@ function answerMC(i){
     if(streak>0&&streak%10===0){shield++;newShield=true;}
     if(streak>best)best=streak;
     var xpRes=addXP(20);save(i);updUI();
+    checkBonus(true);
     var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=dq.q.f;
     setTimeout(function(){showP(true,f,pr,newShield,xpRes);},350);
   }else{
+    checkBonus(false);
     if(shield>0){
       shield--;btns[i].className='qopt shielded';btns[correctIdx].className='qopt correct';
       subtractXP(10);save(i);updUI();var f=dq.q.f;
@@ -626,9 +825,11 @@ function checkDrag(){
     if(streak>0&&streak%10===0){shield++;newShield=true;}
     if(streak>best)best=streak;
     var xpRes=addXP(20);save();updUI();
+    checkBonus(true);
     var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)],f=cQ.f;
     setTimeout(function(){showP(true,f,pr,newShield,xpRes);},400);
   }else{
+    checkBonus(false);
     if(shield>0){
       shield--;subtractXP(10);save();updUI();var f=cQ.f;
       setTimeout(function(){showPShield(f);},400);
@@ -686,6 +887,112 @@ function confetti(){
     c.style.cssText='left:'+(10+Math.random()*80)+'%;top:'+(Math.random()*5)+'px;width:'+(5+Math.random()*5)+'px;height:'+(5+Math.random()*5)+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-delay:'+(Math.random()*.4)+'s;animation-duration:'+(1+Math.random()*.7)+'s;';
     box.appendChild(c);setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c);},2200);
   }
+}
+
+// CANJEADOR
+function getTramo(xpTotal){
+  var t=null;
+  for(var i=0;i<TRAMOS.length;i++){if(xpTotal>=TRAMOS[i].xp)t=TRAMOS[i];}
+  return t;
+}
+function generarId(nombre){
+  var partes=nombre.trim().split(/\s+/);
+  var id='';
+  for(var i=0;i<partes.length&&id.length<6;i++){
+    var p=partes[i].replace(/[^a-z]/gi,'').toUpperCase();
+    id+=p.substring(0,Math.max(1,Math.min(2,6-id.length-(partes.length-i-1))));
+  }
+  return id.substring(0,6);
+}
+function openCanje(e){
+  if(e)e.stopPropagation();
+  showCS(0);
+  var prev=document.getElementById('cs0prev');
+  var prevCode=document.getElementById('cs0prevCode');
+  if(lastCodigo){
+    prev.style.display='block';
+    prevCode.textContent=lastCodigo;
+  }else{
+    prev.style.display='none';
+  }
+  document.getElementById('canjeOverlay').classList.add('open');
+  closePanel();
+}
+function closeCanje(){document.getElementById('canjeOverlay').classList.remove('open');}
+function showCS(n){
+  for(var i=0;i<=3;i++){
+    var s=document.getElementById('cs'+i);
+    if(s)s.className='canje-screen'+(i===n?' active':'');
+  }
+  var e1=document.getElementById('canjeErr1'),e2=document.getElementById('canjeErr2');
+  if(e1)e1.style.display='none';if(e2)e2.style.display='none';
+}
+function copyToClipboard(txt){
+  var ta=document.createElement('textarea');
+  ta.value=txt;
+  ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
+  ta.setAttribute('readonly','');
+  // Permitir selección en este elemento aunque esté bloqueada globalmente
+  ta.style.webkitUserSelect='text';
+  ta.style.userSelect='text';
+  document.body.appendChild(ta);
+  ta.focus();ta.select();
+  try{
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    return true;
+  }catch(e){
+    document.body.removeChild(ta);
+    return false;
+  }
+}
+function copyPrevCode(){
+  var ok=copyToClipboard(lastCodigo);
+  alert(ok?'✅ Código copiado: '+lastCodigo:'Tu código: '+lastCodigo);
+}
+function copyCodigo(){
+  var cod=document.getElementById('canjeCodigoFinal').textContent;
+  var ok=copyToClipboard(cod);
+  alert(ok?'✅ Código copiado: '+cod:'Tu código: '+cod);
+}
+function generarCodigo(acumular){
+  var xpPrevio=0,idUsar='';
+  if(acumular){
+    var codAnterior=document.getElementById('canjeCodigoAnterior').value.trim().toUpperCase();
+    var err2=document.getElementById('canjeErr2');
+    if(!codAnterior){err2.style.display='block';err2.textContent='Introduce tu código anterior.';return;}
+    var partes=codAnterior.split('-');
+    if(partes.length<4){err2.style.display='block';err2.textContent='Formato no válido.';return;}
+    idUsar=partes[0];
+    var sufijoCod=partes[1]+'-'+partes[2];
+    var tramoAnterior=null;
+    for(var i=0;i<TRAMOS.length;i++){if(TRAMOS[i].sufijo===sufijoCod)tramoAnterior=TRAMOS[i];}
+    if(!tramoAnterior){err2.style.display='block';err2.textContent='Código no reconocido.';return;}
+    if(alumnoId&&idUsar!==alumnoId){err2.style.display='block';err2.textContent='Este código no es tuyo.';return;}
+    xpPrevio=tramoAnterior.xp;
+    if(!alumnoId){alumnoId=idUsar;try{localStorage.setItem('alm_uid',alumnoId);}catch(e){}}
+  }else{
+    var nombre=document.getElementById('canjeNombre').value.trim();
+    var err1=document.getElementById('canjeErr1');
+    if(nombre.trim().split(/\s+/).length<2){err1.style.display='block';return;}
+    idUsar=generarId(nombre);
+    alumnoId=idUsar;alumnoNombre=nombre;
+    try{localStorage.setItem('alm_uid',alumnoId);localStorage.setItem('alm_uname',alumnoNombre);}catch(e){}
+  }
+  var xpTotal=xpPrevio+xp;
+  var tramo=getTramo(xpTotal);
+  if(!tramo){
+    var err=document.getElementById(acumular?'canjeErr2':'canjeErr1');
+    err.style.display='block';err.textContent='Aún no tienes XP suficiente (mínimo 50 XP).';return;
+  }
+  var codigo=alumnoId+'-'+tramo.sufijo+'-26';
+  lastCodigo=codigo;
+  xpCanjeado=xpTotal;xp=0;
+  try{localStorage.setItem('alm_xpc',xpCanjeado);localStorage.setItem('alm_lastcode',lastCodigo);}catch(e){}
+  save();updUI();
+  document.getElementById('canjeCodigoFinal').textContent=codigo;
+  document.getElementById('canjeResumen').textContent='XP acumulado: '+xpTotal+' → +'+tramo.nota.toFixed(2)+' puntos extra en tu nota final.';
+  showCS(3);
 }
 
 var layer=document.getElementById('el');
