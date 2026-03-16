@@ -112,4 +112,4 @@ Incrustar en la descripción de sección:
 
 ---
 
-*Creado por Alberto Sánchez Cabanillas — Docente FP Comercio y Marketing · [LinkedIn](https://www.linkedin.com/in/albertosanchezcabanillas/) · IES Ícaro · Curso 2025-2026*
+*Creado por Alberto Sánchez Cabanillas — Docente FP Comercio y Marketing · [LinkedIn](https://www.linkedin.com/in/albertosanchezcabanillas/) · Curso 2025-2026*
