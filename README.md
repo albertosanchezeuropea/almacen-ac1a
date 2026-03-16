@@ -29,6 +29,9 @@ El aprendizaje se gamifica a través de un sistema completo de **rachas, XP, lig
 
 ### ⚡ Sistema de rachas y multiplicadores
 - Cada respuesta correcta **suma 1 a la racha**
+
+![github-small](https://github.com/albertosanchezedu/banner-racha-tecnicas-almacen/blob/c77b2ff00ddc88ffe4a77c86ea10307d64a4f9ad/images/banner_acierto.png)
+
 - Un fallo **reinicia la racha a 0** y **resta 10 XP**
 
 ![github-small](https://github.com/albertosanchezedu/banner-racha-tecnicas-almacen/blob/5c750cd6860e7cfdb5ad06eb9844e4179b70f67d/images/banner_rachaperdida.png)
