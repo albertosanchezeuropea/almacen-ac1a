@@ -136,7 +136,7 @@ Sistema de fidelización progresivo — fácil al principio, difícil después. 
 ![github-small](https://github.com/albertosanchezedu/banner-racha-tecnicas-almacen/blob/5c750cd6860e7cfdb5ad06eb9844e4179b70f67d/images/banner_pantallagenerado.png)
 6. El alumno lo introduce en el **cuestionario de canje del Aula Virtual** → la nota se registra automáticamente en el calificador
 ![github-small](https://github.com/albertosanchezedu/banner-racha-tecnicas-almacen/blob/5c750cd6860e7cfdb5ad06eb9844e4179b70f67d/images/banner_cuestionario.png)
-![github-small]()
+![github-small](https://github.com/albertosanchezedu/banner-racha-tecnicas-almacen/blob/6a8549e314f991296d7e0bcae26e19ac0d8b81b9/images/banner_canjeado.png)
 
 ⚠️ Los códigos son personales. Cada código lleva el identificador del alumno y solo funciona para él.
 
