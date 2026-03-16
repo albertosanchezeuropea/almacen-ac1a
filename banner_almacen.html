@@ -204,11 +204,24 @@ body{padding:18px 20px 28px;-webkit-user-select:none;-moz-user-select:none;user-
 <!-- MINI-JUEGO -->
 <div class="mgov" id="mgov">
   <div class="mgbox">
-    <div class="mg-title">⚡ ¡Bonus! Caza los emojis</div>
-    <div class="mg-sub" id="mgSub">Toca todos los que puedas en 4 segundos</div>
-    <div class="mg-timer-wrap"><div class="mg-timer-bar" id="mgTimerBar" style="width:100%"></div></div>
-    <div class="mg-count" id="mgCount">Cazados: 0</div>
-    <div class="mg-grid" id="mgGrid"></div>
+    <!-- PANTALLA INICIO -->
+    <div id="mgIntro">
+      <div class="mg-title">⚡ ¡Bonus desbloqueado!</div>
+      <div style="font-size:32px;margin:10px 0;">🎯</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;margin-bottom:6px;">Caza todos los emojis que puedas</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:14px;">Tienes <strong style="color:#C4F135;">4 segundos</strong> — ¡rápido!</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:16px;">13+ emojis = 🛡️ protector de racha</div>
+      <button class="mg-btn" onclick="startMG()">¡Empezar! →</button>
+    </div>
+    <!-- PANTALLA JUEGO -->
+    <div id="mgGame" style="display:none">
+      <div class="mg-title">⚡ ¡Caza los emojis!</div>
+      <div class="mg-sub" id="mgSub">¡Toca todos los que puedas!</div>
+      <div class="mg-timer-wrap"><div class="mg-timer-bar" id="mgTimerBar" style="width:100%"></div></div>
+      <div class="mg-count" id="mgCount">Cazados: 0</div>
+      <div class="mg-grid" id="mgGrid"></div>
+    </div>
+    <!-- RESULTADO -->
     <div class="mg-result" id="mgResult" style="display:none">
       <div class="mg-result-icon" id="mgResIcon">📦</div>
       <div class="mg-result-title" id="mgResTitle">¡Bien!</div>
@@ -415,16 +428,23 @@ var mgActive=false,mgCaught=0,mgTimerInt=null,mgSpawnInt=null;
 var questionsAnswered=0;
 function shouldTriggerMG(){return questionsAnswered>0&&questionsAnswered%7===0&&Math.random()<0.6;}
 function openMG(){
-  mgActive=true;mgCaught=0;
+  mgActive=false;mgCaught=0;
   clearInterval(mgTimerInt);clearInterval(mgSpawnInt);
+  document.getElementById('mgIntro').style.display='block';
+  document.getElementById('mgGame').style.display='none';
   document.getElementById('mgResult').style.display='none';
   document.getElementById('mgBtn').style.display='none';
-  document.getElementById('mgSub').textContent='Toca todos los que puedas en 4 segundos';
+  document.getElementById('mgov').classList.add('show');
+}
+
+function startMG(){
+  mgActive=true;mgCaught=0;
+  document.getElementById('mgIntro').style.display='none';
+  document.getElementById('mgGame').style.display='block';
   document.getElementById('mgCount').textContent='Cazados: 0';
   document.getElementById('mgGrid').innerHTML='';
   document.getElementById('mgTimerBar').style.width='100%';
   document.getElementById('mgTimerBar').className='mg-timer-bar';
-  document.getElementById('mgov').classList.add('show');
   var spawnCount=0;
   mgSpawnInt=setInterval(function(){
     if(!mgActive)return;
@@ -463,6 +483,7 @@ function spawnMGEmoji(){
 }
 function endMG(){
   document.getElementById('mgGrid').innerHTML='';
+  document.getElementById('mgGame').style.display='none';
   var icon,title,prize,xpGain=0,shieldGain=0;
   if(mgCaught<=3){icon='📦';title='¡Buen intento!';xpGain=20;prize='+'+xpGain+' XP';}
   else if(mgCaught<=6){icon='🏷️';title='¡Nada mal!';xpGain=50;prize='+'+xpGain+' XP';}
@@ -475,8 +496,6 @@ function endMG(){
   document.getElementById('mgResPrize').textContent=prize;
   document.getElementById('mgResult').style.display='block';
   document.getElementById('mgBtn').style.display='block';
-  document.getElementById('mgCount').textContent='Cazados: '+mgCaught;
-  document.getElementById('mgSub').textContent='¡Tiempo!';
   if(shieldGain>0)confettiMG();
 }
 function confettiMG(){
@@ -535,12 +554,12 @@ function answerMC(i){
   }else{
     if(shield>0){
       shield--;btns[i].className='qopt shielded';btns[correctIdx].className='qopt correct';
-      var xpRes=addXP(10);save(i);updUI();var f=dq.q.f;
+      save(i);updUI();var f=dq.q.f;
       setTimeout(function(){showPShield(f);},350);
     }else{
       btns[i].className='qopt wrong';btns[correctIdx].className='qopt correct';
-      var old=streak,f=dq.q.f,xpRes=addXP(10);streak=0;save(i);updUI();
-      setTimeout(function(){showP(false,f,null,old,xpRes);},350);
+      var old=streak,f=dq.q.f;streak=0;save(i);updUI();
+      setTimeout(function(){showP(false,f,null,old,{gain:0});},350);
     }
   }
   document.getElementById('qf').style.display='block';
@@ -605,11 +624,11 @@ function checkDrag(){
     setTimeout(function(){showP(true,f,pr,newShield,xpRes);},400);
   }else{
     if(shield>0){
-      shield--;var xpRes=addXP(10);save();updUI();var f=cQ.f;
+      shield--;save();updUI();var f=cQ.f;
       setTimeout(function(){showPShield(f);},400);
     }else{
-      var old=streak,f=cQ.f,xpRes=addXP(10);streak=0;save();updUI();
-      setTimeout(function(){showP(false,f,null,old,xpRes);},400);
+      var old=streak,f=cQ.f;streak=0;save();updUI();
+      setTimeout(function(){showP(false,f,null,old,{gain:0});},400);
     }
   }
   questionsAnswered++;
