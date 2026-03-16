@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <question type="shortanswer">
+    <n>
+      <text>Canje de XP – Punto extra Módulo Formativo</text>
+    </n>
+    <questiontext format="html">
+      <text><![CDATA[
+        <p>Introduce tu <strong>código de canje de XP</strong> generado en el banner del Aula Virtual.</p>
+        <p>El código tiene el formato: <code>TUSNOMBRES-XXX-XXXX-26</code></p>
+        <p><em>⚠️ Tu código es personal e intransferible. Está vinculado a tu nombre y solo funciona para ti. Solo puedes canjearlo una vez.</em></p>
+      ]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text><![CDATA[<p>Gracias por tu participación. Tu puntuación extra ha sido registrada.</p>]]></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <usecase>0</usecase>
+
+    <!-- TRAMO 1: 50 XP = +0.05 puntos -->
+    <answer fraction="5" format="moodle_auto_format">
+      <text>*-R7M-2KV9-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.05 puntos extra. ¡Bienvenido al sistema!</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 2: 300 XP = +0.10 puntos -->
+    <answer fraction="10" format="moodle_auto_format">
+      <text>*-W4N-8PL3-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.10 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 3: 700 XP = +0.14 puntos -->
+    <answer fraction="14.28571" format="moodle_auto_format">
+      <text>*-T9B-5FX1-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.14 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 4: 1.200 XP = +0.17 puntos -->
+    <answer fraction="16.66667" format="moodle_auto_format">
+      <text>*-K3J-7ZQ6-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.17 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 5: 1.900 XP = +0.20 puntos -->
+    <answer fraction="20" format="moodle_auto_format">
+      <text>*-H6D-4WR8-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.20 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 6: 2.800 XP = +0.25 puntos -->
+    <answer fraction="25" format="moodle_auto_format">
+      <text>*-N2S-9MK5-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.25 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 7: 3.900 XP = +0.30 puntos -->
+    <answer fraction="30" format="moodle_auto_format">
+      <text>*-V8L-1CT4-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.30 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 8: 5.200 XP = +0.33 puntos -->
+    <answer fraction="33.33333" format="moodle_auto_format">
+      <text>*-Q5G-6HP2-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.33 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 9: 6.500 XP = +0.40 puntos -->
+    <answer fraction="40" format="moodle_auto_format">
+      <text>*-B1X-3NV7-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.40 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 10: 8.000 XP = +0.50 puntos -->
+    <answer fraction="50" format="moodle_auto_format">
+      <text>*-F4W-8RJ9-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.50 puntos extra. ¡Medio punto conseguido!</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 11: 9.000 XP = +0.60 puntos -->
+    <answer fraction="60" format="moodle_auto_format">
+      <text>*-Z7K-2DT5-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.60 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 12: 9.800 XP = +0.67 puntos -->
+    <answer fraction="66.66667" format="moodle_auto_format">
+      <text>*-L3P-6BQ1-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.67 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 13: 10.500 XP = +0.70 puntos -->
+    <answer fraction="70" format="moodle_auto_format">
+      <text>*-M9C-4LW8-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.70 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 14: 11.100 XP = +0.75 puntos -->
+    <answer fraction="75" format="moodle_auto_format">
+      <text>*-E2V-7SK3-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.75 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 15: 11.600 XP = +0.80 puntos -->
+    <answer fraction="80" format="moodle_auto_format">
+      <text>*-J6H-1NF9-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.80 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 16: 12.000 XP = +0.83 puntos -->
+    <answer fraction="83.33333" format="moodle_auto_format">
+      <text>*-G8T-5ZM2-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.83 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 17: 12.350 XP = +0.90 puntos -->
+    <answer fraction="90" format="moodle_auto_format">
+      <text>*-D4R-9BX6-26</text>
+      <feedback format="html"><text><![CDATA[<p>✅ Código validado. +0.90 puntos extra registrados.</p>]]></text></feedback>
+    </answer>
+
+    <!-- TRAMO 18: 13.200 XP = +1.00 punto -->
+    <answer fraction="100" format="moodle_auto_format">
+      <text>*-A9V-2HT1-26</text>
+      <feedback format="html"><text><![CDATA[<p>🏆 ¡Punto completo! +1.00 punto extra. ¡Solo los mejores del curso llegan aquí!</p>]]></text></feedback>
+    </answer>
+
+    <!-- Respuesta incorrecta -->
+    <answer fraction="0" format="moodle_auto_format">
+      <text>*</text>
+      <feedback format="html"><text><![CDATA[<p>❌ Código no válido. Comprueba que lo has copiado correctamente desde el Aula Virtual.</p>]]></text></feedback>
+    </answer>
+
+  </question>
+</quiz>
